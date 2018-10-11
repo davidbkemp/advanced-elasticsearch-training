@@ -1,0 +1,20 @@
+DELETE /test
+
+POST /test/doc
+{
+  "title": "Elasticsearch Hands On"
+}
+
+# For an explanation, see https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-profile.html
+GET /test/_search
+{
+  "profile": true,
+  "query": {
+    "match": {
+      "title": {
+        "query": "Elasticsearch Tutorial"
+      }
+    }
+  }
+}
+

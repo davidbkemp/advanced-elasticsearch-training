@@ -1,0 +1,53 @@
+DELETE /childcare-centres
+
+# Create a mapping that includes a percolator field.
+PUT /childcare-centres
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "name": {
+          "type": "text",
+          "analyzer": "english"
+        },
+        "geocode": {
+          "type": "geo_point"
+        },
+        "query": {
+          "type": "percolator"
+        }
+      }
+    }
+  }
+}
+
+# Save a query.
+# NOTE: You do NOT need to insert actual childcare documents. So, no logstash required.
+
+PUT /childcare-centres/doc/1
+{
+  "query": {
+    "match": {
+      "name": "Goat"
+    }
+  }
+}
+
+# Determine if this new document matches.
+GET /childcare-centres/_search
+{
+  "query": {
+    "percolate": {
+      "field": "query",
+      "document": {
+        "name": "Billy Goat's Child Care",
+        "contact_ph": "03 9999 2222",
+        "geocode": {
+          "lat": -37.80932522,
+          "lon": 144.96026152
+        }
+      }
+    }
+  }
+}
+

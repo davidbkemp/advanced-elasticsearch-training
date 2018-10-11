@@ -1,0 +1,122 @@
+
+DELETE /listings
+
+# Index example docs
+POST /listings/doc/_bulk
+{ "index": {}}
+{ "address": "1 Smith St Melbourne Vic 3000", "product": "highlight", "price": 820 }
+{ "index": {}}
+{ "address": "12 Smith St Sydney NSW 2000", "product": "highlight", "price": 950 }
+{ "index": {}}
+{ "address": "44 Smith St Brisbane QLD 4000", "product": "premier", "price": 900 }
+{ "index": {}}
+{ "address": "121 Smith St Perth WA 6000", "product": "premier", "price": 460 }
+{ "index": {}}
+{ "address": "3 Smith St Hobart TAS 7000", "product": "standard", "price": 650 }
+{ "index": {}}
+{ "address": "454 Smith St Adelaide SA 5000", "product": "standard", "price": 930 }
+
+
+
+# Find all listings, but rank according to product: premier, then hightlight, and then the rest
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match_all": {}
+      },
+      "functions": [
+        {
+          "filter": {"match": { "product": "premier" }},
+          "weight": 3
+        },
+        {
+          "filter": {"match": { "product": "highlight" }},
+          "weight": 2
+        }
+      ]
+    }
+  }
+}
+
+
+# Sort by rank, then by price
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match_all": {}
+      },
+      "functions": [
+        {
+          "filter": {"match": { "product": "premier" }},
+          "weight": 3
+        },
+        {
+          "filter": {"match": { "product": "highlight" }},
+          "weight": 2
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "_score": {
+        "order": "desc"
+      }
+    },
+    {
+      "price": "desc"
+    }
+  ]
+}
+
+
+# List all properties ranked by how close the price is to 800
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match_all": {}
+      },
+      "functions": [
+        {
+          "linear": {
+            "price": {
+              "origin": 800,
+              "scale": 1000,
+              "decay": 0.5
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+# Rank Premiers in Brisbane above all else
+# Note that, by default, the function score query multiplies the scores together
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match_all": {}
+      },
+      "functions": [
+        {
+          "filter": {"match": { "product": "premier" }},
+          "weight": 3
+        },
+        {
+          "filter": {"match": { "address": "Brisbane" }},
+          "weight": 2
+        }
+      ]
+    }
+  }
+}

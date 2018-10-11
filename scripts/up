@@ -1,0 +1,8 @@
+#! /bin/bash -e
+#
+# Run elasticsearch and kibana+sense
+
+cd "$(dirname $0)"/..
+
+docker volume create --name elasticsearch-hands-on-2-data
+docker-compose up

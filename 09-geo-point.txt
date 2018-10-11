@@ -1,0 +1,154 @@
+DELETE /listings
+
+# Declare a geo-point type for the address.
+PUT /listings
+{
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "address": {
+          "type": "object",
+          "properties": {
+            "fullAddress": {"type": "text"},
+            "geocode": {"type": "geo_point"}
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+# Index example docs
+POST /listings/doc/1
+{
+  "address": {
+    "fullAddress": "511 Church St, Richmond, VIC 3121",
+    "geocode": {
+      "lat": -37.829,
+      "lon": 144.995
+    }
+  }
+}
+
+POST /listings/doc/2
+{
+  "address": {
+    "fullAddress": "Kirribilli House, Kiribilli Ave, Kirribilli NSW 2061",
+    "geocode": {
+      "lat": -33.851,
+      "lon": 151.217
+    }
+  }
+}
+
+# Bounding box search
+# Only works for geo-points
+GET /listings/_search
+{
+  "query": {
+    "geo_bounding_box": {
+      "address.geocode": {
+        "top_left": {
+          "lat": -37,
+          "lon": 144
+        },
+        "bottom_right": {
+          "lat": -38,
+          "lon": 145
+        }
+      }
+    }
+  }
+}
+
+# Radial/distance search
+# Only works for geo-points
+GET /listings/_search
+{
+  "query": {
+    "geo_distance": {
+      "distance": "10km",
+      "address.geocode": {
+        "lat": -37.8,
+        "lon": 145
+      }
+    }
+  }
+}
+
+# Sort by distance
+GET /listings/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "_geo_distance": {
+        "address.geocode": {
+          "lat": -37.8,
+          "lon": 145
+        },
+        "order": "asc",
+        "unit": "km"
+      }
+    }
+  ]
+}
+
+# Score by distance
+# Scale is the distance at which the score will halve
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "functions": [
+        {
+          "gauss": {
+            "address.geocode": {
+              "origin": {
+                "lat": -37.8,
+                "lon": 145
+              },
+              "scale": "1000km"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Polygon search.
+# "This filter might be expensive"
+#    https://www.elastic.co/guide/en/elasticsearch/guide/2.x/filter-by-geopoint.html
+# It may be more efficient to use a geo-shape mapping & geo-shape query.
+GET /listings/_search
+{
+  "query": {
+    "geo_polygon": {
+      "address.geocode": {
+        "points": [
+          {
+            "lat": -37,
+            "lon": 144
+          },
+          {
+            "lat": -37,
+            "lon": 145
+          },
+          {
+            "lat": -40,
+            "lon": 145
+          }
+        ]
+      }
+    }
+  }
+}
+

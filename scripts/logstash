@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -euv -o pipefail
+
+ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://localhost:9200}
+
+# Need to set pipeline.workers to work around bugs in the CSV filter :-(
+# See https://discuss.elastic.co/t/event-dependent-configuration-broken-with-multiple-pipelines/141869
+PIPELINE_WORKERS=1
+
+docker run -e XPACK_MONITORING_ENABLED=false \
+ -e ELASTICSEARCH_URL="$ELASTICSEARCH_URL" \
+  --rm  -i \
+ -v "${LOGSTASH_CONFIG_DIR}":/usr/share/logstash/pipeline/ \
+ --network="container:elasticsearch-hands-on-2" \
+ docker.elastic.co/logstash/logstash:6.4.0 \
+    --pipeline.workers $PIPELINE_WORKERS

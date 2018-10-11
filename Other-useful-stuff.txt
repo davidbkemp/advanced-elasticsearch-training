@@ -1,0 +1,11 @@
+# A grab bag of useful stuff
+
+
+## To move all primary shards off of a node:
+
+PUT /_cluster/settings
+{
+  "transient" :{
+      "cluster.routing.allocation.exclude._name" : "<node name>"
+   }
+}

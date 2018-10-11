@@ -1,0 +1,63 @@
+DELETE /agencies
+
+PUT /agencies
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "name": {"type": "text"},
+        "agents": {
+          "type": "nested",
+          "properties": {
+            "firstName": {"type": "text"},
+            "lastName": {"type": "text"}
+          }
+        }
+      }
+    }
+  }
+}
+
+POST /agencies/doc/1
+{
+  "name": "Nelson Alexander",
+  "agents": [
+     {"firstName": "Mary", "lastName": "Smith"},
+     {"firstName": "Joe", "lastName": "Blogs"}
+    ]
+}
+
+
+POST /agencies/doc/2
+{
+  "name": "MacGrath",
+  "agents": [
+     {"firstName": "Mary", "lastName": "Blogs"},
+     {"firstName": "Joe", "lastName": "Smith"}
+    ]
+}
+
+GET /agencies/_search
+{
+  "query": {
+    "nested": {
+      "path": "agents",
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "match": {
+                "agents.firstName": "Mary"
+              }
+            },
+            {
+              "match": {
+                "agents.lastName": "Blogs"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

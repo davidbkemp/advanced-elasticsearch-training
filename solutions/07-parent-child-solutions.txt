@@ -1,0 +1,109 @@
+# Re-create the "agencies" index from 02a-nested-objects-exercises.md
+# but using a parent/child relationship.
+
+DELETE /agencies
+
+PUT /agencies
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "agencyName": {"type": "text"},
+        "firstName": {"type": "text"},
+        "lastName": {"type": "text"},
+        "join": {
+          "type": "join",
+          "relations": {
+            "agency": "agent"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+POST /agencies/doc/1?routing=1
+{
+  "agencyName": "Nelson Alexander",
+  "join": {
+    "name": "agency"
+  }
+}
+
+POST /agencies/doc/a?routing=1
+{
+    "firstName": "Mary",
+    "lastName": "Smith",
+    "join": {
+      "name": "agent",
+      "parent": "1"
+    }
+}
+
+POST /agencies/doc/b?routing=1
+{
+    "firstName": "Joe",
+    "lastName": "Blogs",
+    "join": {
+      "name": "agent",
+      "parent": "1"
+    }
+}
+
+POST /agencies/doc/2?routing=2
+{
+  "agencyName": "MacGrath",
+  "join": {
+    "name": "agency"
+  }
+}
+
+POST /agencies/doc/x?routing=2
+{
+    "firstName": "Mary",
+    "lastName": "Blogs",
+    "join": {
+      "name": "agent",
+      "parent": "2"
+    }
+}
+
+
+POST /agencies/doc/y?routing=2
+{
+    "firstName": "Joe",
+    "lastName": "Smith",
+    "join": {
+      "name": "agent",
+      "parent": "2"
+    }
+}
+
+# Find only those agencies that have an agent called "Mary Blogs".
+
+GET /agencies/_search
+{
+  "query": {
+    "has_child": {
+      "type": "agent",
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "match": {
+                "firstName": "Mary"
+              }
+            },
+            {
+              "match": {
+                "lastName": "Blogs"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

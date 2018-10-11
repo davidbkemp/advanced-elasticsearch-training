@@ -1,0 +1,42 @@
+Replace ../childcare-centres/mapping-template.json, with:
+
+{
+  "index_patterns": ["childcare-centres"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "suggest": {
+          "type": "completion",
+          "preserve_separators": false,
+          "analyzer": "standard"
+        }
+      }
+    }
+  }
+}
+
+
+Replace the mutate filter in ../childcare-centres/logstash/logstash.config with
+
+  mutate {
+    add_field => { "[suggest]" => "%{[name]}" }
+  }
+
+Re-run the feed-index.sh script.
+
+Try the following search:
+
+GET /childcare-centres/_search
+{
+  "suggest": {
+    "my-suggest": {
+      "text": "Litt",
+      "completion": {
+        "field": "suggest"
+      }
+    }
+  }
+}

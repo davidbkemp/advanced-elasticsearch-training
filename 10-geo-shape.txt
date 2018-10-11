@@ -1,0 +1,88 @@
+DELETE /listings
+
+# Declare a geo-shape type for the address.
+PUT /listings
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "address": {
+          "type": "object",
+          "properties": {
+            "fullAddress": {"type": "text"},
+            "geocode": {"type": "geo_shape"}
+          }
+        }
+      }
+    }
+  }
+}
+
+
+# Index example docs
+# Using the geo-shape array format
+# NOTE HOW THE LONGITUDE COMES BEFORE THE LATITUDE
+POST /listings/doc/1
+{
+  "address": {
+    "fullAddress": "511 Church St, Richmond, VIC 3121",
+    "geocode": {
+       "type" : "point",
+        "coordinates" : [144.995, -37.829]
+    }
+  }
+}
+
+# Note how the co-ord values can be strings
+POST /listings/doc/2
+{
+  "address": {
+    "fullAddress": "Kirribilli House, Kiribilli Ave, Kirribilli NSW 2061",
+    "geocode": {
+       "type" : "point",
+        "coordinates" : ["151.217", "-33.851"]
+    }
+  }
+}
+
+
+# Geo-shape query (polygon)
+# Using geoshapes like this is supposedly more efficient than geo-points
+GET /listings/_search
+{
+  "query": {
+    "geo_shape": {
+      "address.geocode": {
+        "shape": {
+          "type": "polygon",
+          "coordinates": [[[144,-37], [145,-37], [145, -40], [144,-37]]]
+        },
+        "relation": "within"
+      }
+    }
+  }
+}
+
+# Geo-shape query (circle)
+GET /listings/_search
+{
+  "query": {
+    "geo_shape": {
+      "address.geocode": {
+        "shape": {
+          "type": "circle",
+          "coordinates" : [145, -37.8],
+        "radius" : "10km"
+        },
+        "relation": "within"
+      }
+    }
+  }
+}
+
+
+# INTERSECTS - (default) Return all documents whose geo_shape field intersects the query geometry.
+# DISJOINT - Return all documents whose geo_shape field has nothing in common with the query geometry.
+# WITHIN - Return all documents whose geo_shape field is within the query geometry.
+# CONTAINS - Return all documents whose geo_shape field contains the query geometry.
+

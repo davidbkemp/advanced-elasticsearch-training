@@ -1,0 +1,23 @@
+
+# Find matches & alternative spellings for terms in "Powlet Reserve Center"
+
+GET /childcare-centres/_search
+{
+  "query": {
+    "match": {
+      "name": {
+        "query": "Powlet Reserve Center",
+        "operator": "and"
+      }
+    }
+  },
+  "suggest": {
+    "text": "Powlet Reserve Center",
+    "name-suggestions": {
+      "term": {
+        "field": "name",
+        "suggest_mode": "always"
+      }
+    }
+  }
+}

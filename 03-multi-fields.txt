@@ -1,0 +1,41 @@
+DELETE /foo
+
+PUT /foo
+{
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "baa": {
+          "type": "text",
+          "analyzer": "standard",
+          "fields": {
+            "a": {"type": "text", "analyzer": "english"},
+            "b": {"type": "text", "analyzer": "whitespace"},
+            "c": {"type": "text", "analyzer": "simple"}
+          }
+        }
+      }
+    }
+  }
+}
+
+POST /foo/doc
+{
+  "baa": "511 Church St, Richmond"
+}
+
+GET /foo/_search
+{
+  "query": {
+    "match": {
+      "baa.a": {
+        "query": "Churches St",
+        "operator": "and"
+      }
+    }
+  }
+}
+

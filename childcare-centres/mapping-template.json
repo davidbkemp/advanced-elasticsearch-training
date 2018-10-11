@@ -1,0 +1,15 @@
+{
+  "index_patterns": ["childcare-centres"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "geocode": {
+          "type": "geo_point"
+        }
+      }
+    }
+  }
+}

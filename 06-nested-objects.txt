@@ -1,0 +1,206 @@
+DELETE /listings
+
+# Index example docs
+POST /listings/doc/1
+{
+  "address": "1 Smith St Melbourne Vic 3000",
+  "upgrade": [
+    {
+      "product": "premier",
+      "start": "2015-03-07",
+      "end": "2015-03-21"
+    },
+    {
+      "product": "highlight",
+      "start": "2015-03-22",
+      "end": "2015-04-13"
+    }
+  ]
+}
+
+POST /listings/doc/2
+{
+  "address": "2 Jones St Sydney NSW 2000",
+  "upgrade": [
+    {
+      "product": "premier",
+      "start": "2015-03-28",
+      "end": "2015-04-10"
+    },
+    {
+      "product": "highlight",
+      "start": "2015-04-11",
+      "end": "2015-05-19"
+    }
+  ]
+}
+
+# Look at the mapping
+GET /listings/_mapping
+
+
+# Find listings that were premier on April 1.
+# NOTE HOW THIS DOESN'T WORK!!!
+# It includes "1 Smith St" even though it's premier status ended before April 1.
+GET /listings/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "upgrade.product": "premier"
+          }
+        },
+        {
+          "range": {
+            "upgrade.start": {
+              "lte": "2015-04-01"
+            }
+          }
+        },
+        {
+          "range": {
+            "upgrade.end": {
+              "gte": "2015-04-01"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Use Nested Objects
+
+DELETE /listings
+
+PUT /listings
+{
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "address": {"type": "text"},
+        "upgrade": {
+          "type": "nested",
+          "properties": {
+            "product": {"type": "keyword"},
+            "start": {"type": "date"},
+            "end": {"type": "date"}
+          }
+        }
+      }
+    }
+  }
+}
+
+
+# Index example docs again.
+POST /listings/doc/1
+{
+  "address": "1 Smith St Mebloure Vic 3000",
+  "upgrade": [
+    {
+      "product": "premier",
+      "start": "2015-03-07",
+      "end": "2015-03-21"
+    },
+    {
+      "product": "highlight",
+      "start": "2015-03-22",
+      "end": "2015-04-13"
+    }
+  ]
+}
+
+POST /listings/doc/2
+{
+  "address": "2 Jones St Sydney NSW 2000",
+  "upgrade": [
+    {
+      "product": "premier",
+      "start": "2015-03-28",
+      "end": "2015-04-10"
+    },
+    {
+      "product": "highlight",
+      "start": "2015-04-11",
+      "end": "2015-05-19"
+    }
+  ]
+}
+
+# Use a "nested" query
+GET /listings/_search
+{
+  "query": {
+    "nested": {
+      "path": "upgrade",
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "match": {
+                "upgrade.product": "premier"
+              }
+            },
+            {
+              "range": {
+                "upgrade.start": {
+                  "lte": "2015-04-01"
+                }
+              }
+            },
+            {
+              "range": {
+                "upgrade.end": {
+                  "gte": "2015-04-01"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+# Use inner_hits to see which products actually matched
+GET /listings/_search
+{
+  "query": {
+    "nested": {
+      "inner_hits" : {},
+      "path": "upgrade",
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "match": {
+                "upgrade.product": "premier"
+              }
+            },
+            {
+              "range": {
+                "upgrade.start": {
+                  "lte": "2015-04-01"
+                }
+              }
+            },
+            {
+              "range": {
+                "upgrade.end": {
+                  "gte": "2015-04-01"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+

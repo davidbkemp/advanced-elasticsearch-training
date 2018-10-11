@@ -1,0 +1,16 @@
+# write a query to find child care centres within 1km of the Melbourne GPO
+# - Lat: -37.8138932
+# - Lon: 144.9611874
+
+GET /childcare-centres/_search
+{
+  "query": {
+    "geo_distance": {
+      "distance": "1km",
+      "geocode": {
+        "lat": -37.8138932,
+        "lon": 144.9611874
+      }
+    }
+  }
+}

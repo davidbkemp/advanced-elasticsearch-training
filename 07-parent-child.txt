@@ -1,0 +1,195 @@
+DELETE /listings
+
+# title and address are "listing" fields
+# product, start, and end are "upgrade" fields
+# Here, they are all mixed together.
+# A join field is used to relate listing docs with upgrade docs.
+PUT /listings
+{
+  "settings": {
+    "number_of_shards": 5
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "title": {
+          "type": "text"
+        },
+        "address": {
+          "type": "text"
+        },
+        "product": {
+          "type": "keyword"
+        },
+        "start": {
+          "type": "date"
+        },
+        "end": {
+          "type": "date"
+        },
+        "my_join_field": {
+          "type": "join",
+          "relations": {
+            "my_listing": "my_upgrade"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+# Index example docs
+POST /listings/doc/1?routing=abc
+{
+  "title": "Sea Views",
+  "address": "1 Smith St Melbourne Vic 3000",
+  "my_join_field": {
+    "name": "my_listing"
+  }
+}
+
+# Note that you have to specify the parent id when indexing a child.
+POST /listings/doc/100?routing=abc
+{
+  "product": "premier",
+  "start": "2015-03-07",
+  "end": "2015-03-21",
+  "my_join_field": {
+    "name": "my_upgrade",
+    "parent": "1"
+  }
+}
+
+POST /listings/doc/101?routing=abc
+{
+  "product": "highlight",
+  "start": "2015-03-22",
+  "end": "2015-04-13",
+  "my_join_field": {
+    "name": "my_upgrade",
+    "parent": "1"
+  }
+}
+
+
+POST /listings/doc/2?routing=xyz
+{
+  "title": "Renovators Delight",
+  "address": "2 Jones St Sydney NSW 2000",
+  "my_join_field": {
+    "name": "my_listing"
+  }
+}
+
+POST /listings/doc/200?routing=xyz
+{
+  "product": "premier",
+  "start": "2015-03-28",
+  "end": "2015-04-10",
+  "my_join_field": {
+    "name": "my_upgrade",
+    "parent": "2"
+  }
+}
+
+POST /listings/doc/201?routing=xyz
+{
+  "product": "highlight",
+  "start": "2015-04-11",
+  "end": "2015-05-19",
+  "my_join_field": {
+    "name": "my_upgrade",
+    "parent": "2"
+  }
+}
+
+
+# Use "has_child" query
+# Note that you don't get to see the upgrades
+GET /listings/_search
+{
+  "query": {
+    "has_child": {
+      "type": "my_upgrade",
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "match": {
+                "product": "premier"
+              }
+            },
+            {
+              "range": {
+                "start": {
+                  "lte": "2015-04-01"
+                }
+              }
+            },
+            {
+              "range": {
+                "end": {
+                  "gte": "2015-04-01"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+# Use inner_hits to include upgrades in the results.
+GET /listings/_search
+{
+  "query": {
+    "has_child": {
+      "type": "my_upgrade",
+      "inner_hits": {},
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "match": {
+                "product": "premier"
+              }
+            },
+            {
+              "range": {
+                "start": {
+                  "lte": "2015-04-01"
+                }
+              }
+            },
+            {
+              "range": {
+                "end": {
+                  "gte": "2015-04-01"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+# How about has_parent?
+GET /listings/_search
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "my_listing",
+      "inner_hits": {},
+      "query": {
+        "match": {
+          "address": "Sydney"
+        }
+      }
+    }
+  }
+}

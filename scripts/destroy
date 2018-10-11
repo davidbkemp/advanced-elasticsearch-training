@@ -1,0 +1,10 @@
+#! /bin/bash -e
+#
+# Delete elasticsearch and kibana+sense along with all data
+
+cd "$(dirname $0)"/..
+
+docker-compose -f docker-compose.multi-node.yml down --volumes --remove-orphans
+docker-compose down --volumes --remove-orphans
+
+docker volume rm elasticsearch-hands-on-2-data

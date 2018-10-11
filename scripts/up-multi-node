@@ -1,0 +1,7 @@
+#! /bin/bash -e
+#
+# Run a multi-node cluster
+
+cd "$(dirname $0)"/..
+
+docker-compose -f docker-compose.multi-node.yml up

@@ -1,0 +1,250 @@
+DELETE addresses
+
+# Declare a "suggest" field to be of type "completion"
+PUT /addresses
+{
+  "settings": {
+    "number_of_shards": 5
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "my-suggest": {
+          "type": "completion",
+          "preserve_separators": false,
+          "analyzer": "standard"
+        }
+      }
+    }
+  }
+}
+
+# Ingest some data
+POST addresses/doc/1
+{
+  "my-suggest": {
+    "input": "50 Smith St, Brunswick, VIC 3056",
+    "weight": 42
+  }
+}
+
+POST addresses/doc/2
+{
+  "my-suggest": {
+    "input": "53 Green St, Brunswick, VIC 3056",
+    "weight": 10
+  }
+}
+
+POST addresses/doc/3
+{
+  "my-suggest": {
+    "input": "51 Green St, Brunswick, VIC 3056",
+    "weight": 5
+  }
+}
+
+# Request completions of the text "10 smi"
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "50 smi",
+      "completion": {
+        "field": "my-suggest"
+      }
+    }
+  }
+}
+
+# Ordering is by "weight"
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "5",
+      "completion": {
+        "field": "my-suggest"
+      }
+    }
+  }
+}
+
+# Fuzzy matching
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "50 smy",
+      "completion": {
+        "field": "my-suggest",
+        "fuzzy": {
+          "fuzziness": 1
+        }
+      }
+    }
+  }
+}
+
+
+# Exact matches are given preference (only since 5.0)
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "51 Gre",
+      "completion": {
+        "field": "my-suggest",
+        "fuzzy": {
+          "fuzziness": 1
+        }
+      }
+    }
+  }
+}
+
+# By default, will not fuzzy match on first letter.
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "61 Gre",
+      "completion": {
+        "field": "my-suggest",
+        "fuzzy": {
+          "fuzziness": 1
+        }
+      }
+    }
+  }
+}
+
+# Can force fuzzy matching on the first letter via prefix-length
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "61 Gre",
+      "completion": {
+        "field": "my-suggest",
+        "fuzzy": {
+          "fuzziness": 1,
+          "prefix_length": 0
+        }
+      }
+    }
+  }
+}
+
+# Go to https://www.realestate.com.au/property and type "3 Anderson Street, Bent"
+# Note how it matches "1-3 Anderson Street, Bentleigh, Vic 3204"
+# This is not via fuzzy matching, but instead via multiple "input" variations
+# Variations can be supported by using an array
+POST addresses/doc/10
+{
+  "my-suggest": {
+    "input": [
+      "1-3 Anderson Street, Bentleigh, Vic 3204",
+      "1 Anderson Street, Bentleigh, Vic 3204",
+      "3 Anderson Street, Bentleigh, Vic 3204"
+      ]
+  }
+}
+
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "3 Ander",
+      "completion": {
+        "field": "my-suggest"
+      }
+    }
+  }
+}
+
+# The document can include other useful information:
+POST addresses/doc/10
+{
+  "my-suggest": {
+    "input": [
+      "1-3 Anderson Street, Bentleigh, Vic 3204",
+      "1 Anderson Street, Bentleigh, Vic 3204",
+      "3 Anderson Street, Bentleigh, Vic 3204"
+      ]
+  },
+  "address": "1-3 Anderson Street, Bentleigh, Vic 3204",
+  "status": "For sale"
+}
+
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "3 Ander",
+      "completion": {
+        "field": "my-suggest"
+      }
+    }
+  }
+}
+
+
+# If you don't care about weights and variations, you can use a simpler document format
+POST addresses/doc/10
+{
+  "my-suggest": "511 Church St, Richmond, Vic 3121"
+}
+
+GET addresses/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+      "prefix": "511 Chur",
+      "completion": {
+        "field": "my-suggest"
+      }
+    }
+  }
+}
+
+# Weights are 24 bit precision floats.
+
+# Declare a "suggest" field to be of type "completion"
+DELETE /foo
+
+PUT /foo
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "foo": {
+          "type": "completion"
+        }
+      }
+    }
+  }
+}
+
+POST /foo/doc/_bulk
+{"index":{}}
+{"foo": {"input": "aa", "weight": 1000000001}}
+{"index":{}}
+{"foo": {"input": "ab", "weight": 1000000004}}
+{"index":{}}
+{"foo": {"input": "ac", "weight": 1000000003}}
+{"index":{}}
+{"foo": {"input": "ad", "weight": 1000000002}}
+
+# Note how they all get a score of 1000000000 due to floating point rounding:
+GET /foo/_search
+{
+  "suggest": {
+    "my-suggest-query": {
+    "prefix": "a",
+    "completion": {
+      "field": "foo"
+    }
+  }
+  }
+}

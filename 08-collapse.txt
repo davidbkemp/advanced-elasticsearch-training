@@ -1,0 +1,170 @@
+DELETE /listing
+
+PUT /listing
+{
+  "settings": {
+    "number_of_shards": 5
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+
+        "projectId": {"type": "keyword"},
+        "projectName": {"type": "text"},
+
+        "myOrdering": {"type": "integer"},
+        "listingTitle": {"type": "text"},
+        "listingPrice": {"type": "long"}
+      }
+    }
+  }
+}
+
+# Note how the project name is duplicated in every listing in a project
+POST /listing/doc/1
+{
+  "projectId": "project-1",
+  "projectName": "Kings Landing",
+  "myOrdering": 1,
+  "listingTitle": "Blacksmithery",
+  "listingPrice": 100
+}
+
+POST /listing/doc/2
+{
+  "projectId": "project-1",
+  "projectName": "Kings Landing",
+  "myOrdering": 2,
+  "listingTitle": "Bakery",
+  "listingPrice": 200
+}
+
+POST /listing/doc/3
+{
+  "projectId": "project-1",
+  "projectName": "Kings Landing",
+  "myOrdering": 3,
+  "listingTitle": "Iron Throne",
+  "listingPrice": 1000000
+}
+
+POST /listing/doc/4
+{
+  "projectId": "project-2",
+  "projectName": "Winterfell",
+  "myOrdering": 1,
+  "listingTitle": "Blacksmithery",
+  "listingPrice": 50
+}
+
+POST /listing/doc/5
+{
+  "projectId": "project-2",
+  "projectName": "Winterfell",
+  "myOrdering": 2,
+  "listingTitle": "Bakery",
+  "listingPrice": 150
+}
+
+POST /listing/doc/6
+{
+  "projectId": "project-2",
+  "projectName": "Winterfell",
+  "myOrdering": 3,
+  "listingTitle": "Great Keep",
+  "listingPrice": 10000
+}
+
+# Ordinary search without field collapsing
+GET /listing/_search
+{
+  "query": {
+    "range": {
+      "listingPrice": {
+        "gte": 200
+      }
+    }
+  },
+  "sort": [
+    {
+      "listingPrice": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+# Field collapsing only returns the first listing for each project
+GET /listing/_search
+{
+  "query": {
+    "range": {
+      "listingPrice": {
+        "gte": 200
+      }
+    }
+  },
+  "sort": [
+    {
+      "listingPrice": {
+        "order": "desc"
+      }
+    }
+  ],
+  "collapse": {
+    "field" : "projectId"
+  }
+}
+
+# Inner-hits can be used to group the other children
+GET /listing/_search
+{
+  "query": {
+    "range": {
+      "listingPrice": {
+        "gte": 200
+      }
+    }
+  },
+  "sort": [
+    {
+      "listingPrice": {
+        "order": "desc"
+      }
+    }
+  ],
+  "collapse": {
+    "field" : "projectId",
+    "inner_hits": {
+      "name": "children"
+    }
+  }
+}
+
+# You can even specify size and sort order for the inner hits
+GET /listing/_search
+{
+  "query": {
+    "range": {
+      "listingPrice": {
+        "gte": 200
+      }
+    }
+  },
+  "sort": [
+    {
+      "listingPrice": {
+        "order": "desc"
+      }
+    }
+  ],
+  "collapse": {
+    "field" : "projectId",
+    "inner_hits": {
+      "name": "children",
+      "size": 5,
+      "sort": [{ "myOrdering": "asc" }]
+    }
+  }
+}
+

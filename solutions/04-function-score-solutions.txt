@@ -1,0 +1,104 @@
+# Write a function_score query that gives a score of
+#
+# - 30.x to premier
+# - 20.x to highlight
+# - 10.x to standard
+#
+# Where x is reflects how close the property price is to 800. For example,
+#
+# - A premier property with a price of 820 should get a score something like 30.99
+# (i.e. close to, but below 31)
+# - A highlight property with a price of 460 should get a score something like 20.83
+# (i.e. between 20 and 21)
+#
+
+# Two approaches:
+
+# 1. just add it as another function
+
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "score_mode": "sum",
+      "functions": [
+        {
+          "filter": {"match": { "product": "premier" }},
+          "weight": 30
+        },
+        {
+          "filter": {"match": { "product": "highlight" }},
+          "weight": 20
+        },
+        {
+          "filter": {"match": { "product": "standard" }},
+          "weight": 10
+        },
+        {
+          "gauss": {
+            "price": {
+              "origin": 800,
+              "scale": 1000,
+              "decay": 0.5
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# 2: Use a nested query and add the scores:
+
+GET /listings/_search
+{
+  "query": {
+    "function_score": {
+      "boost_mode": "sum",
+      "query": {
+        "function_score": {
+          "query": {
+            "match_all": {}
+          },
+          "functions": [
+            {
+              "gauss": {
+                "price": {
+                  "origin": 800,
+                  "scale": 1000,
+                  "decay": 0.5
+                }
+              }
+            }
+          ]
+        }
+      },
+      "functions": [
+        {
+          "filter": {
+            "match": {
+              "product": "premier"
+            }
+          },
+          "weight": 30
+        },
+        {
+          "filter": {
+            "match": {
+              "product": "highlight"
+            }
+          },
+          "weight": 20
+        },
+        {
+          "filter": {
+            "match": {
+              "product": "standard"
+            }
+          },
+          "weight": 10
+        }
+      ]
+    }
+  }
+}

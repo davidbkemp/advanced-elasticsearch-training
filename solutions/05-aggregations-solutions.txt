@@ -1,0 +1,34 @@
+
+# Cities ordered by popularity
+GET /listings/_search
+{
+    "size" : 0,
+    "aggs" : {
+        "popular_cities" : {
+            "terms" : {
+              "field" : "city"
+            }
+        }
+    }
+}
+
+
+# Max price per city
+GET /listings/_search
+{
+  "size": 0,
+  "aggs": {
+    "popular_cities": {
+      "terms": {
+        "field": "city"
+      },
+      "aggs": {
+        "max_price": {
+          "max": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}

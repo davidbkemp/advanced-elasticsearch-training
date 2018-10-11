@@ -1,0 +1,203 @@
+# Delete the `listings` index
+DELETE /listings
+
+# Note the "keyword" type: it means no tokenizing etc., but is requihouse for aggregation.
+PUT /listings
+{
+  "settings": {
+    "number_of_shards": 5
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "price": {"type": "integer"},
+        "propertyType": {"type": "keyword"},
+        "city": {"type": "keyword"},
+        "sold": {"type": "date"}
+      }
+    }
+  }
+}
+
+
+# Index example docs
+POST /listings/doc/_bulk
+{ "index": {}}
+{ "price" : 100000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-10-28" }
+{ "index": {}}
+{ "price" : 200000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-11-05" }
+{ "index": {}}
+{ "price" : 300000, "propertyType" : "apartment", "city" : "brisbane",  "sold" : "2017-05-18" }
+{ "index": {}}
+{ "price" : 150000, "propertyType" : "land",      "city" : "melbourne", "sold" : "2017-07-02" }
+{ "index": {}}
+{ "price" : 120000, "propertyType" : "apartment", "city" : "melbourne", "sold" : "2017-08-19" }
+{ "index": {}}
+{ "price" : 200000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-11-05" }
+{ "index": {}}
+{ "price" : 80000,  "propertyType" : "house",     "city" : "sydney",    "sold" : "2017-01-01" }
+{ "index": {}}
+{ "price" : 250000, "propertyType" : "land",      "city" : "brisbane",  "sold" : "2017-02-12" }
+
+
+# Basic aggregation - most popular property types
+GET /listings/_search
+{
+    "aggs" : {
+        "my_aggregation" : {
+            "terms" : {
+              "field" : "propertyType"
+            }
+        }
+    }
+}
+
+# Most popular brisbane property types
+# Note that the query "hits" returns all "brisbane" listings, and the aggregations are restricted to "brisbane"
+GET /listings/_search
+{
+    "query": {
+      "match": {
+        "city": "brisbane"
+      }
+    },
+    "aggs" : {
+        "my_aggregation" : {
+            "terms" : {
+              "field" : "propertyType"
+            }
+        }
+    }
+}
+
+# Use aggregation filtering instead
+# This time the query returns everything, but the aggregation is still restricted to "brisbane"
+GET /listings/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "aggs": {
+    "my_aggregation": {
+      "filter": {
+        "match": {
+          "city": "brisbane"
+        }
+      },
+      "aggs": {
+        "my_sub_aggregation": {
+          "terms": {
+            "field": "propertyType"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+# What is doc_count_error_upper_bound and sum_other_doc_count???
+# See https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
+GET /listings/_search
+{
+    "aggs" : {
+        "my_aggregation" : {
+            "terms" : {
+              "field" : "propertyType",
+              "size": 1,
+              "shard_size": 1
+            }
+        }
+    }
+}
+
+
+# Find the average price of each property type
+GET /listings/_search
+{
+   "aggs": {
+      "my_aggregation": {
+         "terms": {
+            "field": "propertyType"
+         },
+         "aggs": {
+            "my_sub_aggregation": {
+               "avg": {
+                  "field": "price"
+               }
+            }
+         }
+      }
+   }
+}
+
+# Order by average price
+GET /listings/_search
+{
+   "aggs": {
+      "my_aggregation": {
+         "terms": {
+            "field": "propertyType",
+            "order" : { "my_sub_aggregation" : "desc" }
+         },
+         "aggs": {
+            "my_sub_aggregation": {
+               "avg": {
+                  "field": "price"
+               }
+            }
+         }
+      }
+   }
+}
+
+
+# Nest a second bucket to determine top cities per property type
+GET /listings/_search
+{
+   "aggs": {
+      "my_aggregation": {
+         "terms": {
+            "field": "propertyType"
+         },
+         "aggs": {
+            "my_sub_aggregation": {
+               "avg": {
+                  "field": "price"
+               }
+            },
+            "my_other_sub_aggregation": {
+                "terms": {
+                    "field": "city"
+                }
+            }
+         }
+      }
+   }
+}
+
+
+# Finally, add some extra metrics to determine min/max price per city, per property type
+GET /listings/_search
+{
+   "aggs": {
+      "my_aggregation": {
+         "terms": {
+            "field": "propertyType"
+         },
+         "aggs": {
+            "my_sub_aggregation": { "avg": { "field": "price" }
+            },
+            "my_other_sub_aggregation" : {
+                "terms" : {
+                    "field" : "city"
+                },
+                "aggs" : {
+                    "my_sub_sub_agg" : { "min": { "field": "price"} },
+                    "my_other_sub_sub_agg" : { "max": { "field": "price"} }
+                }
+            }
+         }
+      }
+   }
+}

@@ -1,0 +1,112 @@
+DELETE /listings
+
+# Declare a simple listing mapping along with a queries mapping
+PUT /listings
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+
+        "description": {"type": "text", "analyzer": "english"},
+        "suburb": {"type": "keyword"},
+        "bedrooms": {"type": "integer"},
+
+        "my-saved-query-name": {"type": "keyword"},
+        "my-query-field": {"type": "percolator"}
+
+      }
+    }
+  }
+}
+
+
+# Save a couple of queries
+PUT /listings/doc/1
+{
+  "my-saved-query-name": "my first saved query",
+  "my-query-field": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "suburb": "Brunswick VIC 3056"
+          }
+        },
+        {
+          "match": {
+            "bedrooms": 4
+          }
+        },
+        {
+          "match_phrase": {
+            "description": "swim pool"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+PUT /listings/doc/2
+{
+  "my-saved-query-name": "my second saved query",
+  "my-query-field": {
+    "bool": {
+      "filter": [
+        {
+          "match": {
+            "suburb": "Coburg VIC 3058"
+          }
+        },
+        {
+          "match": {
+            "bedrooms": 1
+          }
+        },
+        {
+          "match_phrase": {
+            "description": "swim pool"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Percolate a new document
+GET /listings/_search
+{
+  "query": {
+    "percolate": {
+      "field": "my-query-field",
+      "document": {
+        "suburb": "Brunswick VIC 3056",
+        "bedrooms": 4,
+        "description": "Large garden, swimming pool"
+      }
+    }
+  }
+}
+
+
+# Insert an actual listing
+PUT /listings/doc/1234
+{
+    "suburb": "Coburg VIC 3058",
+    "bedrooms": 1,
+    "description": "In-ground swimming pool. Spacious kitchen"
+}
+
+# Find queries that match the existing document
+GET /listings/_search
+{
+  "query": {
+    "percolate": {
+      "field": "my-query-field",
+      "index": "listings",
+      "type": "doc",
+      "id": "1234"
+    }
+  }
+}

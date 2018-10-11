@@ -1,0 +1,95 @@
+DELETE addresses
+
+PUT addresses
+{
+  "settings": {
+    "number_of_shards": 1
+  }
+}
+
+POST /addresses/doc/_bulk
+{ "index" : {} }
+{ "display": "31 Smith St, Brunswick, VIC 3056", "street": "Smith", "suburb": "Brunswick" }
+{ "index" : {} }
+{ "display": "25 Smith St, Brunswick, VIC 3056", "street": "Smith", "suburb": "Brunswick" }
+{ "index" : {} }
+{ "display": "25 Smyth St, Coburg, VIC 3058", "street": "Smyth", "suburb": "Coburg" }
+{ "index" : {} }
+{ "display": "55 Brunswick St, Fitzroy, VIC 3065", "street": "Brunswick", "suburb": "Fitzroy" }
+
+# Suggest alternative spellings of words that have no matches
+# Note: computed per shard and so can result in suggestions when the
+#   alternative spelling is in a shard that doesn't have the spelling provided.
+# Can also use "suggest_mode" of "always" or "popular"
+GET /addresses/_search
+{
+  "suggest": {
+    "text": "30 Smyth St, Brunwick, VIC 3058",
+    "my-suggestion": {
+      "term": {
+        "field": "display"
+      }
+    }
+  }
+}
+
+# Find suggestions even for terms that match (e.g. "Smyth")
+GET /addresses/_search
+{
+  "suggest": {
+    "text": "30 Smyth St, Brunwick, VIC 3058",
+    "my-suggestion": {
+      "term": {
+        "field": "display",
+        "suggest_mode": "always"
+      }
+    }
+  }
+}
+
+
+# Separate street suggestions from suburb suggestions.
+GET /addresses/_search
+{
+  "suggest": {
+    "text": "30 Smyth St, Brunwick, VIC 3058",
+    "my-street-suggestions": {
+      "term": {
+        "field": "street",
+        "suggest_mode": "popular"
+      }
+    },
+    "my-suburb-suggestions": {
+      "term": {
+        "field": "suburb"
+      }
+    }
+  }
+}
+
+# Perform a search and a suggest query in a single combined request
+GET /addresses/_search
+{
+  "query": {
+    "match": {
+      "display": {
+        "query": "30 Smyth Brunwick VIC 3058",
+        "operator": "and"
+      }
+    }
+  },
+  "suggest": {
+    "text": "30 Smyth Brunwick VIC 3058",
+    "my-street-suggestions": {
+      "term": {
+        "field": "street",
+        "suggest_mode": "always"
+      }
+    },
+    "my-suburb-suggestions": {
+      "term": {
+        "field": "suburb"
+      }
+    }
+  }
+}
