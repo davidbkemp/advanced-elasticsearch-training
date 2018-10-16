@@ -125,9 +125,6 @@ GET /listings/_search
 }
 
 # Polygon search.
-# "This filter might be expensive"
-#    https://www.elastic.co/guide/en/elasticsearch/guide/2.x/filter-by-geopoint.html
-# It may be more efficient to use a geo-shape mapping & geo-shape query.
 GET /listings/_search
 {
   "query": {

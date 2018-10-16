@@ -47,7 +47,6 @@ POST /listings/doc/2
 
 
 # Geo-shape query (polygon)
-# Using geoshapes like this is supposedly more efficient than geo-points
 GET /listings/_search
 {
   "query": {
