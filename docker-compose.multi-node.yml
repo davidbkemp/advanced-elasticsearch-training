@@ -2,7 +2,7 @@ version: "2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     container_name: elasticsearch1
     environment:
      - cluster.name=docker-cluster
@@ -31,7 +31,7 @@ services:
       - esnet
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     container_name: elasticsearch2
     environment:
      - cluster.name=docker-cluster
@@ -60,7 +60,7 @@ services:
       - esnet
 
   elasticsearch3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     container_name: elasticsearch3
     environment:
      - cluster.name=docker-cluster
@@ -89,7 +89,7 @@ services:
       - esnet
 
   monitor:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     container_name: monitor
     environment:
      - cluster.name=docker-monitor-cluster
@@ -114,7 +114,7 @@ services:
       - esnet
 
   kibana-devtools:
-    image: docker.elastic.co/kibana/kibana:6.4.0
+    image: docker.elastic.co/kibana/kibana:6.6.0
     container_name: kibana-devtools
     environment:
       ELASTICSEARCH_URL: http://elasticsearch3:9200
@@ -124,7 +124,7 @@ services:
       - esnet
 
   kibana-dashboard:
-    image: docker.elastic.co/kibana/kibana:6.4.0
+    image: docker.elastic.co/kibana/kibana:6.6.0
     container_name: kibana-dashboard
     environment:
       ELASTICSEARCH_URL: http://monitor:9200

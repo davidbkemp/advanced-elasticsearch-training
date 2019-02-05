@@ -41,6 +41,9 @@ PUT /listings
 
 
 # Index example docs
+# Note:
+# - you need to specify a "routing" query parameter (more later)
+# - you need to specify that it is a "my_listing"
 POST /listings/doc/1?routing=abc
 {
   "title": "Sea Views",
@@ -50,7 +53,9 @@ POST /listings/doc/1?routing=abc
   }
 }
 
-# Note that you have to specify the parent id when indexing a child.
+# Note:
+# - parents and children need the same routing parameter (consider using the parent id)
+# - you have to specify the parent id when indexing a child.
 POST /listings/doc/100?routing=abc
 {
   "product": "premier",
@@ -104,6 +109,11 @@ POST /listings/doc/201?routing=xyz
     "parent": "2"
   }
 }
+
+# You may optionally specify a "routing" parameter at query time
+# BEWARE THAT IT WILL INCLUDE LISTINGS WITH DIFFERENT ROUTING PARAMETERS IF
+# THE HASHING ALGORITHM PUTS THEM IN THE SAME SHARD.
+GET /listings/doc/_search?routing=xyz
 
 
 # Use "has_child" query

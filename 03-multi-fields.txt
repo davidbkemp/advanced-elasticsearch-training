@@ -1,6 +1,7 @@
-DELETE /foo
+DELETE /listings
 
-PUT /foo
+# Note the three "sub-fields" of address, with three different analysers
+PUT /listings
 {
   "settings": {
     "number_of_shards": 1
@@ -8,7 +9,7 @@ PUT /foo
   "mappings": {
     "doc": {
       "properties": {
-        "baa": {
+        "address": {
           "type": "text",
           "analyzer": "standard",
           "fields": {
@@ -22,18 +23,31 @@ PUT /foo
   }
 }
 
-POST /foo/doc
+POST /listings/doc
 {
-  "baa": "511 Church St, Richmond"
+  "address": "511 Church St, Richmond"
 }
 
-GET /foo/_search
+# THIS WILL NOT MATCH.
+# "Churches" does not match "Church" (standard analyser)
+GET /listings/_search
 {
   "query": {
     "match": {
-      "baa.a": {
-        "query": "Churches St",
-        "operator": "and"
+      "address": {
+        "query": "Churches"
+      }
+    }
+  }
+}
+
+# This does match as "address.a" uses the "english" analyser
+GET /listings/_search
+{
+  "query": {
+    "match": {
+      "address.a": {
+        "query": "Churches"
       }
     }
   }

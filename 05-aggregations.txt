@@ -23,21 +23,21 @@ PUT /listings
 # Index example docs
 POST /listings/doc/_bulk
 { "index": {}}
-{ "price" : 100000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-10-28" }
+{ "price" : 600000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-10-28" }
 { "index": {}}
-{ "price" : 200000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-11-05" }
+{ "price" : 800000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-11-05" }
 { "index": {}}
 { "price" : 300000, "propertyType" : "apartment", "city" : "brisbane",  "sold" : "2017-05-18" }
 { "index": {}}
-{ "price" : 150000, "propertyType" : "land",      "city" : "melbourne", "sold" : "2017-07-02" }
+{ "price" : 450000, "propertyType" : "land",      "city" : "melbourne", "sold" : "2017-07-02" }
 { "index": {}}
-{ "price" : 120000, "propertyType" : "apartment", "city" : "melbourne", "sold" : "2017-08-19" }
+{ "price" : 360000, "propertyType" : "apartment", "city" : "melbourne", "sold" : "2017-08-19" }
 { "index": {}}
-{ "price" : 200000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-11-05" }
+{ "price" : 400000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-11-05" }
 { "index": {}}
-{ "price" : 80000,  "propertyType" : "house",     "city" : "sydney",    "sold" : "2017-01-01" }
+{ "price" : 900000, "propertyType" : "house",     "city" : "sydney",    "sold" : "2017-01-01" }
 { "index": {}}
-{ "price" : 250000, "propertyType" : "land",      "city" : "brisbane",  "sold" : "2017-02-12" }
+{ "price" : 500000, "propertyType" : "land",      "city" : "brisbane",  "sold" : "2017-02-12" }
 
 
 # Basic aggregation - most popular property types
@@ -105,7 +105,7 @@ GET /listings/_search
             "terms" : {
               "field" : "propertyType",
               "size": 1,
-              "shard_size": 1
+              "shard_size": 2
             }
         }
     }

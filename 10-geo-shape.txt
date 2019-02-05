@@ -40,7 +40,7 @@ POST /listings/doc/2
     "fullAddress": "Kirribilli House, Kiribilli Ave, Kirribilli NSW 2061",
     "geocode": {
        "type" : "point",
-        "coordinates" : ["151.217", "-33.851"]
+        "coordinates" : [151.217, -33.851]
     }
   }
 }
@@ -62,7 +62,8 @@ GET /listings/_search
   }
 }
 
-# Geo-shape query (circle)
+# AS OF VERSION 6.6, YOU CAN NOT LONGER PERFORM RADIAL SEARCHES USING GEO-SHAPE.
+# Use geo-point, or approximate your circle with a polygon.
 GET /listings/_search
 {
   "query": {
@@ -71,7 +72,7 @@ GET /listings/_search
         "shape": {
           "type": "circle",
           "coordinates" : [145, -37.8],
-        "radius" : "10km"
+          "radius" : "10km"
         },
         "relation": "within"
       }

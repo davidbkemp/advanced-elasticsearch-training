@@ -70,4 +70,4 @@ Write a query to find those agents that have had
 more than 5 sales ordered by the number of sales descending.
 
 Use field collapsing to ensure that only one agent is returned per agency.
-
+Note: you should not need to change the index mapping. 
