@@ -7,7 +7,7 @@
     "doc": {
       "properties": {
         "geocode": {
-          "type": "geo_shape"
+          "type": "geo_point"
         }
       }
     }
