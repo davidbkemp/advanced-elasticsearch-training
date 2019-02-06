@@ -1,3 +1,9 @@
+# Geo Point:
+# - Good for storing lat/lon points
+# - Supports polygon and distance searches
+# - Supports sort-by-distance
+# - Supports various aggregation operations
+
 DELETE /listings
 
 # Declare a geo-point type for the address.

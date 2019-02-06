@@ -28,14 +28,20 @@ Note how the longitude comes before the latitide. This is standard Geo Json.
 
 ```
 "geocode": {
-       "type" : "point",
-        "coordinates" : ["144.995", "-37.829"]
-    }
+   "type" : "point",
+   "coordinates" : [144.995, -37.829]
+}
 ```
-
 
 Re-run the ../childcare-centres/feed-index.sh script.
 
-Use a geo-shape query to find child care centres within 1km of the Melbourne GPO
-  - Lat: -37.8138932
-  - Lon: 144.9611874
+Use a geo-shape query to find the three child care centres within the following bounding box:
+
+Top Left:
+
+  - Lat: -37.81
+  - Lon: 144.96
+
+Bottom Right:
+  - Lat: -37.82
+  - Lon: 144.97

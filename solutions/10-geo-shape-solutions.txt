@@ -1,7 +1,12 @@
 
-- use a geo-shape query to find child care centres within 1km of the Melbourne GPO
-  - Lat: -37.8138932
-  - Lon: 144.9611874
+Use a geo-shape query to find child care centres within the following bounding box:
+
+Top Left:
+  - Lat: -37.81
+  - Lon: 144.96
+Bottom Right:
+  - Lat: -37.82
+  - Lon: 144.97
 
 GET childcare-centres/_search
 {
@@ -9,9 +14,14 @@ GET childcare-centres/_search
     "geo_shape": {
       "geocode": {
         "shape": {
-          "type": "circle",
-          "coordinates" : [144.9611874, -37.8138932],
-          "radius" : "1km"
+          "type": "polygon",
+          "coordinates" : [[
+            [144.96, -37.81],
+            [144.97, -37.81],
+            [144.97, -37.82],
+            [144.96, -37.82],
+            [144.96, -37.81]
+            ]]
         },
         "relation": "within"
       }
@@ -22,8 +32,13 @@ GET childcare-centres/_search
 
 Note: The mutate filter could have added the lon and lat values as separate steps!
 
-    mutate {
-       add_field => { "[geocode][type]" => "point" }
-       add_field => { "[geocode][coordinates]" => "%{[lon]}" }
-       add_field => { "[geocode][coordinates]" => "%{[lat]}" }
-    }
+
+      mutate {
+        add_field => { "[geocode][type]" => "point" }
+        add_field => { "[geocode][coordinates]" => ["%{[lon]}", "%{[lat]}"] }
+      }
+
+      # This converts all the array elements from strings to floats.
+      mutate {
+        convert => { "[geocode][coordinates]" => "float" }
+      }
