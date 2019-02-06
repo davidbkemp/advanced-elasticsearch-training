@@ -9,59 +9,56 @@ PUT addresses
 
 POST /addresses/doc/_bulk
 { "index" : {} }
-{ "display": "31 Smith St, Brunswick, VIC 3056", "street": "Smith", "suburb": "Brunswick" }
+{ "address": "31 Smith St, Brunswick, VIC 3056" }
 { "index" : {} }
-{ "display": "25 Smith St, Brunswick, VIC 3056", "street": "Smith", "suburb": "Brunswick" }
+{ "address": "25 Smith St, Brunswick, VIC 3056" }
 { "index" : {} }
-{ "display": "25 Smyth St, Coburg, VIC 3058", "street": "Smyth", "suburb": "Coburg" }
+{ "address": "25 Smyth St, Coburg, VIC 3058" }
 { "index" : {} }
-{ "display": "55 Brunswick St, Fitzroy, VIC 3065", "street": "Brunswick", "suburb": "Fitzroy" }
+{ "address": "55 Station St, Fitzroy, VIC 3065" }
 
 # Suggest alternative spellings of words that have no matches
 # Note: computed per shard and so can result in suggestions when the
 #   alternative spelling is in a shard that doesn't have the spelling provided.
-# Can also use "suggest_mode" of "always" or "popular"
 GET /addresses/_search
 {
   "suggest": {
     "text": "30 Smyth St, Brunwick, VIC 3058",
     "my-suggestion": {
       "term": {
-        "field": "display"
+        "field": "address"
       }
     }
   }
 }
 
-# Find suggestions even for terms that match (e.g. "Smyth")
+
+# Find suggestions even for terms that match (e.g. "Smith" and "Smyth")
+# max_term_freq - used for ignoring common terms
 GET /addresses/_search
 {
   "suggest": {
-    "text": "30 Smyth St, Brunwick, VIC 3058",
+    "text": "30 Smith St, Brunwick, VIC 3058",
     "my-suggestion": {
       "term": {
-        "field": "display",
-        "suggest_mode": "always"
+        "field": "address",
+        "suggest_mode": "always",
+        "max_term_freq": 0.75
       }
     }
   }
 }
 
-
-# Separate street suggestions from suburb suggestions.
+# Only suggest if the term is more popular
 GET /addresses/_search
 {
   "suggest": {
-    "text": "30 Smyth St, Brunwick, VIC 3058",
-    "my-street-suggestions": {
+    "text": "30 Smith St, Brunswick, VIC 3058",
+    "my-suggestion": {
       "term": {
-        "field": "street",
-        "suggest_mode": "popular"
-      }
-    },
-    "my-suburb-suggestions": {
-      "term": {
-        "field": "suburb"
+        "field": "address",
+        "suggest_mode": "popular",
+        "max_term_freq": 0.75
       }
     }
   }
@@ -72,7 +69,7 @@ GET /addresses/_search
 {
   "query": {
     "match": {
-      "display": {
+      "address": {
         "query": "30 Smyth Brunwick VIC 3058",
         "operator": "and"
       }
@@ -82,14 +79,11 @@ GET /addresses/_search
     "text": "30 Smyth Brunwick VIC 3058",
     "my-street-suggestions": {
       "term": {
-        "field": "street",
-        "suggest_mode": "always"
-      }
-    },
-    "my-suburb-suggestions": {
-      "term": {
-        "field": "suburb"
+        "field": "address",
+        "suggest_mode": "always",
+        "max_term_freq": 0.75
       }
     }
   }
 }
+
