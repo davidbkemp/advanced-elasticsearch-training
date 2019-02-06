@@ -16,7 +16,8 @@ GET /childcare-centres/_search
     "name-suggestions": {
       "term": {
         "field": "name",
-        "suggest_mode": "always"
+        "suggest_mode": "always",
+        "max_term_freq": 0.99
       }
     }
   }
