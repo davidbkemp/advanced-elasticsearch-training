@@ -10,6 +10,8 @@ Modify the mapping you used for the child care centres index so that
 Save a query for percolation that will match any document that
 has the word "goat" in its name.
 
+**Remember to use `match` instead of `term` when matching against the name.**
+
 It should match a percolation query like this one:
 
 ```

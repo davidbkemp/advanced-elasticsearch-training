@@ -28,12 +28,12 @@ PUT /listings/doc/1
     "bool": {
       "filter": [
         {
-          "match": {
+          "term": {
             "suburb": "Brunswick VIC 3056"
           }
         },
         {
-          "match": {
+          "term": {
             "bedrooms": 4
           }
         },
@@ -55,12 +55,12 @@ PUT /listings/doc/2
     "bool": {
       "filter": [
         {
-          "match": {
+          "term": {
             "suburb": "Coburg VIC 3058"
           }
         },
         {
-          "match": {
+          "term": {
             "bedrooms": 1
           }
         },
@@ -91,6 +91,7 @@ GET /listings/_search
 
 
 # Insert an actual listing
+# NOTE: listings can be kept in a different index to the queries.
 PUT /listings/doc/1234
 {
     "suburb": "Coburg VIC 3058",

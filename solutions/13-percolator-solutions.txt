@@ -13,6 +13,10 @@ PUT /childcare-centres
         "geocode": {
           "type": "geo_point"
         },
+
+        "query-name": {
+          "type": "keyword"
+        },
         "query": {
           "type": "percolator"
         }
@@ -26,6 +30,7 @@ PUT /childcare-centres
 
 PUT /childcare-centres/doc/1
 {
+  "query-name": "Goat query",
   "query": {
     "match": {
       "name": "Goat"
