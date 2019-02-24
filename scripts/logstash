@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# USAGE:
+# LOGSTASH_CONFIG_DIR=<full path to directory containing logstash config> ./logstash
+
 set -euv -o pipefail
 
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://localhost:9200}
