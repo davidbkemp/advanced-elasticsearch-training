@@ -14,7 +14,7 @@ Inserting an agency should look like this:
 POST /agencies/doc/1?routing=1
 {
   "agencyName": "Nelson Alexander",
-  "join": {
+  "my_join_field": {
     "name": "agency"
   }
 }
@@ -27,7 +27,7 @@ POST /agencies/doc/a?routing=1
 {
     "firstName": "Mary",
     "lastName": "Smith",
-    "join": {
+    "my_join_field": {
       "name": "agent",
       "parent": "1"
     }
