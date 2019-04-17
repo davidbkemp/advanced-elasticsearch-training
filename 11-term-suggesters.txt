@@ -1,13 +1,6 @@
 DELETE addresses
 
-PUT addresses
-{
-  "settings": {
-    "number_of_shards": 1
-  }
-}
-
-POST /addresses/doc/_bulk
+POST /addresses/_bulk
 { "index" : {} }
 { "address": "31 Smith St, Brunswick, VIC 3056" }
 { "index" : {} }

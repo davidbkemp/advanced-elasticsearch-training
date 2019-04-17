@@ -3,24 +3,19 @@ DELETE addresses
 # Declare a "suggest" field to be of type "completion"
 PUT /addresses
 {
-  "settings": {
-    "number_of_shards": 5
-  },
   "mappings": {
-    "doc": {
-      "properties": {
-        "my-suggest": {
-          "type": "completion",
-          "preserve_separators": false,
-          "analyzer": "standard"
-        }
+    "properties": {
+      "my-suggest": {
+        "type": "completion",
+        "preserve_separators": false,
+        "analyzer": "standard"
       }
     }
   }
 }
 
 # Ingest some data
-POST addresses/doc/1
+POST addresses/_doc/1
 {
   "my-suggest": {
     "input": "50 Smith St, Brunswick, VIC 3056",
@@ -28,7 +23,7 @@ POST addresses/doc/1
   }
 }
 
-POST addresses/doc/2
+POST addresses/_doc/2
 {
   "my-suggest": {
     "input": "53 Green St, Brunswick, VIC 3056",
@@ -36,7 +31,7 @@ POST addresses/doc/2
   }
 }
 
-POST addresses/doc/3
+POST addresses/_doc/3
 {
   "my-suggest": {
     "input": "51 Green St, Brunswick, VIC 3056",
@@ -140,7 +135,7 @@ GET addresses/_search
 # Note how it matches "1-3 Anderson Street, Bentleigh, Vic 3204"
 # This is not via fuzzy matching, but instead via multiple "input" variations
 # Variations can be supported by using an array
-POST addresses/doc/10
+POST addresses/_doc/10
 {
   "my-suggest": {
     "input": [
@@ -164,7 +159,7 @@ GET addresses/_search
 }
 
 # The document can include other useful information:
-POST addresses/doc/10
+POST addresses/_doc/10
 {
   "my-suggest": {
     "input": [
@@ -191,7 +186,7 @@ GET addresses/_search
 
 
 # If you don't care about weights and variations, you can use a simpler document format
-POST addresses/doc/10
+POST addresses/_doc/10
 {
   "my-suggest": "511 Church St, Richmond, Vic 3121"
 }
@@ -216,17 +211,15 @@ DELETE /foo
 PUT /foo
 {
   "mappings": {
-    "doc": {
-      "properties": {
-        "foo": {
-          "type": "completion"
-        }
+    "properties": {
+      "foo": {
+        "type": "completion"
       }
     }
   }
 }
 
-POST /foo/doc/_bulk
+POST /foo/_bulk
 {"index":{}}
 {"foo": {"input": "aa", "weight": 1000000001}}
 {"index":{}}

@@ -8,20 +8,18 @@ PUT /listings
     "number_of_shards": 5
   },
   "mappings": {
-    "doc": {
-      "properties": {
-        "price": {"type": "integer"},
-        "propertyType": {"type": "keyword"},
-        "city": {"type": "keyword"},
-        "sold": {"type": "date"}
-      }
+    "properties": {
+      "price": {"type": "integer"},
+      "propertyType": {"type": "keyword"},
+      "city": {"type": "keyword"},
+      "sold": {"type": "date"}
     }
   }
 }
 
 
 # Index example docs
-POST /listings/doc/_bulk
+POST /listings/_bulk
 { "index": {}}
 { "price" : 600000, "propertyType" : "house",     "city" : "hobart",    "sold" : "2017-10-28" }
 { "index": {}}

@@ -12,23 +12,18 @@ DELETE /agent
 
 PUT /agent
 {
-  "settings": {
-    "number_of_shards": 1
-  },
   "mappings": {
-    "doc": {
-      "properties": {
-        "agentId": {"type": "keyword"},
-        "agentName": {"type": "text"},
-        "agencyId": {"type": "keyword"},
-        "agencyName": {"type": "text"},
-        "sales": {"type": "integer"}
-      }
+    "properties": {
+      "agentId": {"type": "keyword"},
+      "agentName": {"type": "text"},
+      "agencyId": {"type": "keyword"},
+      "agencyName": {"type": "text"},
+      "sales": {"type": "integer"}
     }
   }
 }
 
-PUT /agent/doc/agent-1
+PUT /agent/_doc/agent-1
 {
   "agentId": "agent-1",
   "agentName": "Mary Smith",
@@ -37,7 +32,7 @@ PUT /agent/doc/agent-1
   "sales": 18
 }
 
-PUT /agent/doc/agent-2
+PUT /agent/_doc/agent-2
 {
   "agentId": "agent-2",
   "agentName": "Joe Blogs",
@@ -46,7 +41,7 @@ PUT /agent/doc/agent-2
   "sales": 7
 }
 
-PUT /agent/doc/agent-3
+PUT /agent/_doc/agent-3
 {
   "agentId": "agent-3",
   "agentName": "Mary Blogs",
@@ -55,7 +50,7 @@ PUT /agent/doc/agent-3
   "sales": 20
 }
 
-PUT /agent/doc/agent-4
+PUT /agent/_doc/agent-4
 {
   "agentId": "agent-4",
   "agentName": "Joe Smith",

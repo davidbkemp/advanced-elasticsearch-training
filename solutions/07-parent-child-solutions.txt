@@ -6,25 +6,23 @@ DELETE /agencies
 PUT /agencies
 {
   "mappings": {
-    "doc": {
-      "properties": {
-        "agencyName": {"type": "text"},
-        "firstName": {"type": "text"},
-        "lastName": {"type": "text"},
-        "join": {
-          "type": "join",
-          "relations": {
-            "agency": "agent"
-          }
-        }
-      }
-    }
+     "properties": {
+       "agencyName": {"type": "text"},
+       "firstName": {"type": "text"},
+       "lastName": {"type": "text"},
+       "join": {
+         "type": "join",
+         "relations": {
+           "agency": "agent"
+         }
+       }
+     }
   }
 }
 
 
 
-POST /agencies/doc/1?routing=1
+POST /agencies/_doc/1?routing=1
 {
   "agencyName": "Nelson Alexander",
   "join": {
@@ -32,7 +30,7 @@ POST /agencies/doc/1?routing=1
   }
 }
 
-POST /agencies/doc/a?routing=1
+POST /agencies/_doc/a?routing=1
 {
     "firstName": "Mary",
     "lastName": "Smith",
@@ -42,7 +40,7 @@ POST /agencies/doc/a?routing=1
     }
 }
 
-POST /agencies/doc/b?routing=1
+POST /agencies/_doc/b?routing=1
 {
     "firstName": "Joe",
     "lastName": "Blogs",
@@ -52,7 +50,7 @@ POST /agencies/doc/b?routing=1
     }
 }
 
-POST /agencies/doc/2?routing=2
+POST /agencies/_doc/2?routing=2
 {
   "agencyName": "MacGrath",
   "join": {
@@ -60,7 +58,7 @@ POST /agencies/doc/2?routing=2
   }
 }
 
-POST /agencies/doc/x?routing=2
+POST /agencies/_doc/x?routing=2
 {
     "firstName": "Mary",
     "lastName": "Blogs",
@@ -71,7 +69,7 @@ POST /agencies/doc/x?routing=2
 }
 
 
-POST /agencies/doc/y?routing=2
+POST /agencies/_doc/y?routing=2
 {
     "firstName": "Joe",
     "lastName": "Smith",

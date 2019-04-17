@@ -4,22 +4,19 @@ DELETE /childcare-centres
 PUT /childcare-centres
 {
   "mappings": {
-    "doc": {
-      "properties": {
-        "name": {
-          "type": "text",
-          "analyzer": "english"
-        },
-        "geocode": {
-          "type": "geo_point"
-        },
+    "properties": {
+      "name": {
+        "type": "text",
+        "analyzer": "english"
+      },
+      "geocode": {
+        "type": "geo_point"
 
-        "query-name": {
-          "type": "keyword"
-        },
-        "query": {
-          "type": "percolator"
-        }
+      "query-name": {
+        "type": "keyword"
+      },
+      "query": {
+        "type": "percolator"
       }
     }
   }
@@ -28,7 +25,7 @@ PUT /childcare-centres
 # Save a query.
 # NOTE: You do NOT need to insert actual childcare documents. So, no logstash required.
 
-PUT /childcare-centres/doc/1
+PUT /childcare-centres/_doc/1
 {
   "query-name": "Goat query",
   "query": {

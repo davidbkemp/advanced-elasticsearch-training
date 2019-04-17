@@ -3,22 +3,20 @@ DELETE /agencies
 PUT /agencies
 {
   "mappings": {
-    "doc": {
-      "properties": {
-        "name": {"type": "text"},
-        "agents": {
-          "type": "nested",
-          "properties": {
-            "firstName": {"type": "text"},
-            "lastName": {"type": "text"}
-          }
+    "properties": {
+      "name": {"type": "text"},
+      "agents": {
+        "type": "nested",
+        "properties": {
+          "firstName": {"type": "text"},
+          "lastName": {"type": "text"}
         }
       }
     }
   }
 }
 
-POST /agencies/doc/1
+POST /agencies/_doc/1
 {
   "name": "Nelson Alexander",
   "agents": [
@@ -28,7 +26,7 @@ POST /agencies/doc/1
 }
 
 
-POST /agencies/doc/2
+POST /agencies/_doc/2
 {
   "name": "MacGrath",
   "agents": [

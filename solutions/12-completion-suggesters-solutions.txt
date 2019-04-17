@@ -2,17 +2,12 @@ Replace ../childcare-centres/mapping-template.json, with:
 
 {
   "index_patterns": ["childcare-centres"],
-  "settings": {
-    "number_of_shards": 1
-  },
   "mappings": {
-    "doc": {
-      "properties": {
-        "suggest": {
-          "type": "completion",
-          "preserve_separators": false,
-          "analyzer": "standard"
-        }
+    "properties": {
+      "suggest": {
+        "type": "completion",
+        "preserve_separators": false,
+        "analyzer": "standard"
       }
     }
   }

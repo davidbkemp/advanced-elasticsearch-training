@@ -1,11 +1,11 @@
 DELETE /test
 
-POST /test/doc
+POST /test/_doc
 {
   "title": "Elasticsearch Hands On"
 }
 
-# For an explanation, see https://www.elastic.co/guide/en/elasticsearch/reference/5.5/search-profile.html
+# For an explanation, see https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-profile.html
 GET /test/_search
 {
   "profile": true,

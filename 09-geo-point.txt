@@ -9,18 +9,13 @@ DELETE /listings
 # Declare a geo-point type for the address.
 PUT /listings
 {
-  "settings": {
-    "number_of_shards": 1
-  },
   "mappings": {
-    "doc": {
-      "properties": {
-        "address": {
-          "type": "object",
-          "properties": {
-            "fullAddress": {"type": "text"},
-            "geocode": {"type": "geo_point"}
-          }
+    "properties": {
+      "address": {
+        "type": "object",
+        "properties": {
+          "fullAddress": {"type": "text"},
+          "geocode": {"type": "geo_point"}
         }
       }
     }
@@ -30,7 +25,7 @@ PUT /listings
 
 
 # Index example docs
-POST /listings/doc/1
+POST /listings/_doc/1
 {
   "address": {
     "fullAddress": "511 Church St, Richmond, VIC 3121",
@@ -41,7 +36,7 @@ POST /listings/doc/1
   }
 }
 
-POST /listings/doc/2
+POST /listings/_doc/2
 {
   "address": {
     "fullAddress": "Kirribilli House, Kiribilli Ave, Kirribilli NSW 2061",

@@ -4,25 +4,21 @@ DELETE /listings
 PUT /listings
 {
   "mappings": {
-    "doc": {
-      "properties": {
+    "properties": {
+      "description": {"type": "text", "analyzer": "english"},
+      "suburb": {"type": "keyword"},
+      "bedrooms": {"type": "integer"},
 
-        "description": {"type": "text", "analyzer": "english"},
-        "suburb": {"type": "keyword"},
-        "bedrooms": {"type": "integer"},
-
-        "user-id": {"type": "keyword"},
-        "my-saved-query-name": {"type": "keyword"},
-        "my-query-field": {"type": "percolator"}
-
-      }
+      "user-id": {"type": "keyword"},
+      "my-saved-query-name": {"type": "keyword"},
+      "my-query-field": {"type": "percolator"}
     }
   }
 }
 
 
 # Save a couple of queries
-PUT /listings/doc/1
+PUT /listings/_doc/1
 {
   "user-id": "1234",
   "my-saved-query-name": "my first saved query",
@@ -50,7 +46,7 @@ PUT /listings/doc/1
 }
 
 
-PUT /listings/doc/2
+PUT /listings/_doc/2
 {
   "user-id": "1234",
   "my-saved-query-name": "my second saved query",
@@ -95,7 +91,7 @@ GET /listings/_search
 
 # Insert an actual listing
 # NOTE: listings can be kept in a different index to the queries.
-PUT /listings/doc/1234
+PUT /listings/_doc/1234
 {
     "suburb": "Coburg VIC 3058",
     "bedrooms": 1,
@@ -109,7 +105,6 @@ GET /listings/_search
     "percolate": {
       "field": "my-query-field",
       "index": "listings",
-      "type": "doc",
       "id": "1234"
     }
   }

@@ -51,7 +51,7 @@ PUT /test
    }
  }
 
-POST /test/doc
+POST /test/_doc
 {
   "title": "test doc"
 }

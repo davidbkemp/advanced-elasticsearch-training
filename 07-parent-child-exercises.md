@@ -11,7 +11,7 @@ You will need a join field for the agency/agent relationship:
 Inserting an agency should look like this:
 
 ```
-POST /agencies/doc/1?routing=1
+POST /agencies/_doc/1?routing=1
 {
   "agencyName": "Nelson Alexander",
   "my_join_field": {
@@ -23,7 +23,7 @@ POST /agencies/doc/1?routing=1
 Inserting an agent with id of `a` that belongs to agency `1` should look like this:
 
 ```
-POST /agencies/doc/a?routing=1
+POST /agencies/_doc/a?routing=1
 {
     "firstName": "Mary",
     "lastName": "Smith",

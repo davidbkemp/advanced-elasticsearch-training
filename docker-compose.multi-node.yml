@@ -2,19 +2,18 @@ version: "2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: elasticsearch1
     environment:
      - cluster.name=docker-cluster
+     - node.name=elasticsearch1
      - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-     - xpack.security.enabled=false
      - xpack.monitoring.collection.enabled=true
      - xpack.monitoring.exporters.remote.type=http
-     - xpack.monitoring.exporters.remote.host=http://monitor:9200
-     - discovery.zen.minimum_master_nodes=2
-     - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2,elasticsearch3
-     - discovery.zen.fd.ping_timeout=5s
+     - xpack.monitoring.exporters.remote.host=monitor
+     - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
+     - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
     ulimits:
       memlock:
         soft: -1
@@ -31,19 +30,18 @@ services:
       - esnet
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: elasticsearch2
     environment:
      - cluster.name=docker-cluster
+     - node.name=elasticsearch2
      - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-     - xpack.security.enabled=false
      - xpack.monitoring.collection.enabled=true
      - xpack.monitoring.exporters.remote.type=http
-     - xpack.monitoring.exporters.remote.host=http://monitor:9200
-     - discovery.zen.minimum_master_nodes=2
-     - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2,elasticsearch3
-     - discovery.zen.fd.ping_timeout=5s
+     - xpack.monitoring.exporters.remote.host=monitor
+     - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
+     - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
     ulimits:
       memlock:
         soft: -1
@@ -60,19 +58,18 @@ services:
       - esnet
 
   elasticsearch3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: elasticsearch3
     environment:
      - cluster.name=docker-cluster
+     - node.name=elasticsearch3
      - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-     - xpack.security.enabled=false
      - xpack.monitoring.collection.enabled=true
      - xpack.monitoring.exporters.remote.type=http
-     - xpack.monitoring.exporters.remote.host=http://monitor:9200
-     - discovery.zen.minimum_master_nodes=2
-     - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2,elasticsearch3
-     - discovery.zen.fd.ping_timeout=5s
+     - xpack.monitoring.exporters.remote.host=monitor
+     - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
+     - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
     ulimits:
       memlock:
         soft: -1
@@ -89,15 +86,17 @@ services:
       - esnet
 
   monitor:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: monitor
     environment:
      - cluster.name=docker-monitor-cluster
+     - node.name=monitor
      - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-     - xpack.security.enabled=false
      - xpack.monitoring.enabled=false
      - xpack.monitoring.collection.enabled=true
+     - discovery.seed_hosts=monitor
+     - cluster.initial_master_nodes=monitor
     ulimits:
       memlock:
         soft: -1
@@ -114,20 +113,20 @@ services:
       - esnet
 
   kibana-devtools:
-    image: docker.elastic.co/kibana/kibana:6.4.0
+    image: docker.elastic.co/kibana/kibana:7.0.0
     container_name: kibana-devtools
     environment:
-      ELASTICSEARCH_URL: http://elasticsearch3:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch3:9200
     ports:
       - "15601:5601"
     networks:
       - esnet
 
   kibana-dashboard:
-    image: docker.elastic.co/kibana/kibana:6.4.0
+    image: docker.elastic.co/kibana/kibana:7.0.0
     container_name: kibana-dashboard
     environment:
-      ELASTICSEARCH_URL: http://monitor:9200
+      ELASTICSEARCH_HOSTS: http://monitor:9200
     ports:
       - "25601:5601"
     networks:

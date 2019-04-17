@@ -3,27 +3,22 @@ DELETE /listings
 # Note the three "sub-fields" of address, with three different analysers
 PUT /listings
 {
-  "settings": {
-    "number_of_shards": 1
-  },
   "mappings": {
-    "doc": {
-      "properties": {
-        "address": {
-          "type": "text",
-          "analyzer": "standard",
-          "fields": {
-            "a": {"type": "text", "analyzer": "english"},
-            "b": {"type": "text", "analyzer": "whitespace"},
-            "c": {"type": "text", "analyzer": "simple"}
-          }
+    "properties": {
+      "address": {
+        "type": "text",
+        "analyzer": "standard",
+        "fields": {
+          "a": {"type": "text", "analyzer": "english"},
+          "b": {"type": "text", "analyzer": "whitespace"},
+          "c": {"type": "text", "analyzer": "simple"}
         }
       }
     }
   }
 }
 
-POST /listings/doc
+POST /listings/_doc
 {
   "address": "511 Church St, Richmond"
 }

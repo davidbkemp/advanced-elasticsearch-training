@@ -2,7 +2,7 @@
 DELETE /listings
 
 # Index example docs
-POST /listings/doc/_bulk
+POST /listings/_bulk
 { "index": {}}
 { "address": "1 Smith St Melbourne Vic 3000", "product": "highlight", "price": 820 }
 { "index": {}}

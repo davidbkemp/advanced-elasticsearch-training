@@ -2,26 +2,20 @@ DELETE /listing
 
 PUT /listing
 {
-  "settings": {
-    "number_of_shards": 5
-  },
   "mappings": {
-    "doc": {
-      "properties": {
+    "properties": {
+      "projectId": {"type": "keyword"},
+      "projectName": {"type": "text"},
 
-        "projectId": {"type": "keyword"},
-        "projectName": {"type": "text"},
-
-        "myOrdering": {"type": "integer"},
-        "listingTitle": {"type": "text"},
-        "listingPrice": {"type": "long"}
-      }
+      "myOrdering": {"type": "integer"},
+      "listingTitle": {"type": "text"},
+      "listingPrice": {"type": "long"}
     }
   }
 }
 
 # Note how the project name is duplicated in every listing in a project
-POST /listing/doc/1
+POST /listing/_doc/1
 {
   "projectId": "project-1",
   "projectName": "Kings Landing",
@@ -30,7 +24,7 @@ POST /listing/doc/1
   "listingPrice": 100
 }
 
-POST /listing/doc/2
+POST /listing/_doc/2
 {
   "projectId": "project-1",
   "projectName": "Kings Landing",
@@ -39,7 +33,7 @@ POST /listing/doc/2
   "listingPrice": 200
 }
 
-POST /listing/doc/3
+POST /listing/_doc/3
 {
   "projectId": "project-1",
   "projectName": "Kings Landing",
@@ -48,7 +42,7 @@ POST /listing/doc/3
   "listingPrice": 1000000
 }
 
-POST /listing/doc/4
+POST /listing/_doc/4
 {
   "projectId": "project-2",
   "projectName": "Winterfell",
@@ -57,7 +51,7 @@ POST /listing/doc/4
   "listingPrice": 50
 }
 
-POST /listing/doc/5
+POST /listing/_doc/5
 {
   "projectId": "project-2",
   "projectName": "Winterfell",
@@ -66,7 +60,7 @@ POST /listing/doc/5
   "listingPrice": 150
 }
 
-POST /listing/doc/6
+POST /listing/_doc/6
 {
   "projectId": "project-2",
   "projectName": "Winterfell",
