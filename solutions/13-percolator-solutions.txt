@@ -11,7 +11,7 @@ PUT /childcare-centres
       },
       "geocode": {
         "type": "geo_point"
-
+      },
       "query-name": {
         "type": "keyword"
       },
