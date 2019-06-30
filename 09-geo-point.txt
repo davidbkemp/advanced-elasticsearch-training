@@ -125,6 +125,24 @@ GET /listings/_search
   }
 }
 
+# NEW to Elasticsearch 7.2
+# Score by distance using "distance_feature"
+# Potentially more efficient than "function_score"
+# unless "track_total_hits" is set to true.
+GET /listings/_search
+{
+  "query": {
+    "distance_feature": {
+      "field": "address.geocode",
+      "pivot": "1000km",
+      "origin": [
+        145,
+        -37.8
+      ]
+    }
+  }
+}
+
 # Polygon search.
 GET /listings/_search
 {

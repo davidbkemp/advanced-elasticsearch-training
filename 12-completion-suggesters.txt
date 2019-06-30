@@ -82,7 +82,7 @@ GET addresses/_search
 }
 
 
-# Exact matches are given preference (only since 5.0)
+# Exact matches are boosted (only since 5.0)
 GET addresses/_search
 {
   "suggest": {
