@@ -133,7 +133,8 @@ However, while this is happening, the remaining two nodes should serve queries.
 - http://localhost:29200/test/_search
 - http://localhost:39200/test/_search
 
-It will take about a minute, but the cluster should eventually elect a new master and rebalance the shards.
+Note how the cluster responds fairly quickly to the death of the master node,
+but it still takes about a minute for the shards to be rebalanced.
 
 
 # Finally
