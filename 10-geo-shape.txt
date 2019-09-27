@@ -39,7 +39,6 @@ POST /listings/_doc/1
   }
 }
 
-# Note how the co-ord values can be strings
 POST /listings/_doc/2
 {
   "address": {

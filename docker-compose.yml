@@ -2,7 +2,7 @@ version: "2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
     container_name: elasticsearch-hands-on-2
     environment:
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -11,17 +11,13 @@ services:
       - "9200:9200"
     volumes:
       - elasticsearch-hands-on-2-data:/usr/share/elasticsearch/data
-    networks:
-      - esnet
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.2.0
+    image: docker.elastic.co/kibana/kibana:7.3.2
     environment:
       - "ELASTICSEARCH_URL=http://elasticsearch-hands-on-2:9200"
     ports:
       - "5601:5601"
-    networks:
-      - esnet
     depends_on:
       - elasticsearch
 
@@ -29,6 +25,3 @@ volumes:
   elasticsearch-hands-on-2-data:
     external: true
 
-networks:
-  esnet:
-    driver: bridge

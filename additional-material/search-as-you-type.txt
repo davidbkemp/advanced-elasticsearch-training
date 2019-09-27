@@ -1,0 +1,82 @@
+DELETE addresses
+
+# Declare a "suggest" field to be of type "completion"
+PUT /addresses
+{
+  "mappings": {
+    "properties": {
+      "my-suggest": {
+        "type": "search_as_you_type"
+      }
+    }
+  }
+}
+
+# Ingest some data
+POST addresses/_doc/1
+{
+  "my-suggest": "50 Smith St, Brunswick, VIC 3056"
+}
+
+POST addresses/_doc/2
+{
+  "my-suggest": "53 Green St, Brunswick, VIC 3056"
+}
+
+POST addresses/_doc/3
+{
+  "my-suggest": "51 Green St, Brunswick, VIC 3056"
+}
+
+# Request completions of the text "10 smi"
+GET addresses/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "10 smith",
+      "type": "bool_prefix",
+      "fields": [
+        "my-suggest",
+        "my-suggest._2gram",
+        "my-suggest._3gram",
+        "my-suggest._index_prefix"
+      ]
+    }
+  }
+}
+
+
+# Fuzzy matching
+GET addresses/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "50 smy",
+      "type": "bool_prefix",
+      "fields": [
+        "my-suggest",
+        "my-suggest._2gram",
+        "my-suggest._3gram",
+        "my-suggest._index_prefix"
+      ]
+    }
+  }
+}
+
+# Exact matches are boosted
+GET addresses/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "51 Gre",
+      "type": "bool_prefix",
+      "fields": [
+        "my-suggest",
+        "my-suggest._2gram",
+        "my-suggest._3gram",
+        "my-suggest._index_prefix"
+      ]
+    }
+  }
+}
+
