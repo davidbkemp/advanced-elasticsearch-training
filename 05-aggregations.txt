@@ -95,7 +95,7 @@ GET /listings/_search
 
 
 # What is doc_count_error_upper_bound and sum_other_doc_count???
-# See https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
 GET /listings/_search
 {
     "aggs" : {
@@ -103,7 +103,7 @@ GET /listings/_search
             "terms" : {
               "field" : "propertyType",
               "size": 1,
-              "shard_size": 2
+              "shard_size": 1
             }
         }
     }
@@ -129,14 +129,14 @@ GET /listings/_search
    }
 }
 
-# Order by average price
+# Order by average price ascending
 GET /listings/_search
 {
    "aggs": {
       "my_aggregation": {
          "terms": {
             "field": "propertyType",
-            "order" : { "my_sub_aggregation" : "desc" }
+            "order" : { "my_sub_aggregation" : "asc" }
          },
          "aggs": {
             "my_sub_aggregation": {
