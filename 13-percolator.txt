@@ -1,24 +1,82 @@
 DELETE /listings
 
-# Declare a simple listing mapping along with a queries mapping
+# Declare a listings index
 PUT /listings
 {
   "mappings": {
     "properties": {
       "description": {"type": "text", "analyzer": "english"},
       "suburb": {"type": "keyword"},
-      "bedrooms": {"type": "integer"},
+      "bedrooms": {"type": "integer"}
+    }
+  }
+}
 
+# Insert a couple of listings
+PUT /listings/_doc/1000
+{
+    "suburb": "Coburg VIC 3058",
+    "bedrooms": 1,
+    "description": "Above ground swimming pool. Spacious kitchen"
+}
+
+PUT /listings/_doc/1001
+{
+    "suburb": "Brunswick VIC 3056",
+    "bedrooms": 4,
+    "description": "Garage, swimming pool, and close to schools"
+}
+
+
+# Perform a query
+
+GET /listings/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "suburb": "Brunswick VIC 3056"
+          }
+        },
+        {
+          "term": {
+            "bedrooms": 4
+          }
+        },
+        {
+          "match_phrase": {
+            "description": "swim pool"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# An index in which to save your queries
+# NOTE: You need to duplicate the mappings for listings
+DELETE /saved-searches
+
+PUT /saved-searches
+{
+  "mappings": {
+    "properties": {
       "user-id": {"type": "keyword"},
       "my-saved-query-name": {"type": "keyword"},
-      "my-query-field": {"type": "percolator"}
+      "my-query-field": {"type": "percolator"},
+
+      "description": {"type": "text", "analyzer": "english"},
+      "suburb": {"type": "keyword"},
+      "bedrooms": {"type": "integer"}
     }
   }
 }
 
 
 # Save a couple of queries
-PUT /listings/_doc/1
+PUT /saved-searches/_doc/1
 {
   "user-id": "1234",
   "my-saved-query-name": "my first saved query",
@@ -46,7 +104,7 @@ PUT /listings/_doc/1
 }
 
 
-PUT /listings/_doc/2
+PUT /saved-searches/_doc/2
 {
   "user-id": "1234",
   "my-saved-query-name": "my second saved query",
@@ -73,8 +131,30 @@ PUT /listings/_doc/2
   }
 }
 
-# Percolate a new document
-GET /listings/_search
+# Now a new listing comes along
+
+PUT /listings/_doc/1003
+{
+    "suburb": "Brunswick VIC 3056",
+    "bedrooms": 4,
+    "description": "Large garden with in-ground swimming pool"
+}
+
+# Find queries that match
+GET /saved-searches/_search
+{
+  "query": {
+    "percolate": {
+      "field": "my-query-field",
+      "index": "listings",
+      "id": "1003"
+    }
+  }
+}
+
+
+# Percolate a document without actually inserting it
+GET /saved-searches/_search
 {
   "query": {
     "percolate": {
@@ -84,28 +164,6 @@ GET /listings/_search
         "bedrooms": 4,
         "description": "Large garden, swimming pool"
       }
-    }
-  }
-}
-
-
-# Insert an actual listing
-# NOTE: listings can be kept in a different index to the queries.
-PUT /listings/_doc/1234
-{
-    "suburb": "Coburg VIC 3058",
-    "bedrooms": 1,
-    "description": "In-ground swimming pool. Spacious kitchen"
-}
-
-# Find queries that match the existing document
-GET /listings/_search
-{
-  "query": {
-    "percolate": {
-      "field": "my-query-field",
-      "index": "listings",
-      "id": "1234"
     }
   }
 }

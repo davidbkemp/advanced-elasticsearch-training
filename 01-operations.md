@@ -120,18 +120,7 @@ Restart the node and have another look.
 
 # Master re-election
 
-Kill the master node these URLs.
-The dead node will respond with a 404, and the others will hang until they have elected a new master.
-
-- http://localhost:19200/_cat/nodes?v
-- http://localhost:29200/_cat/nodes?v
-- http://localhost:39200/_cat/nodes?v
-
-However, while this is happening, the remaining two nodes should serve queries.
-
-- http://localhost:19200/test/_search
-- http://localhost:29200/test/_search
-- http://localhost:39200/test/_search
+Kill the master node and look at each of these URLs.
 
 Note how the cluster responds fairly quickly to the death of the master node,
 but it still takes about a minute for the shards to be rebalanced.
