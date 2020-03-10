@@ -6,7 +6,6 @@ INDEX=${INDEX:-childcare-centres}
 
 SRC_DIR="$PWD/$(dirname $0)"
 MOUNT_DIR="/usr/share/logstash/childcare-centres"
-INPUT_FILE="$MOUNT_DIR/Childcare_Centres.csv"
 
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://localhost:9200}
 
