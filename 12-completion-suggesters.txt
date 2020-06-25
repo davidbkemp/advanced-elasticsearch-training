@@ -7,7 +7,6 @@ PUT /addresses
     "properties": {
       "my-suggest": {
         "type": "completion",
-        "preserve_separators": false,
         "analyzer": "standard"
       }
     }
@@ -39,7 +38,7 @@ POST addresses/_doc/3
   }
 }
 
-# Request completions of the text "10 smi"
+# Request completions of the text "50 smi"
 GET addresses/_search
 {
   "suggest": {

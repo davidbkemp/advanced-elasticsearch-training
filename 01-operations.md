@@ -120,7 +120,7 @@ Restart the node and have another look.
 
 # Master re-election
 
-Kill the master node and look at each of these URLs.
+Kill the master node.
 
 Note how the cluster responds fairly quickly to the death of the master node,
 but it still takes about a minute for the shards to be rebalanced.

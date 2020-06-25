@@ -1,0 +1,36 @@
+# Look up "match_phrase" and use a "match_phrase" query that only matches "1 Church St"
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html
+
+GET /listings/_search
+{
+  "query": {
+    "match_phrase": {
+      "address": "1 Church St"
+    }
+  }
+}
+
+# Use a "bool" query to find listings that match "1 Church St" after English stemming,
+# but gives a higher score (by using "should") to those listings that match without stemming
+
+GET /listings/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match_phrase": {
+            "address.a": "1 Church St"
+          }
+        }
+      ],
+      "should": [
+        {
+          "match_phrase": {
+            "address": "1 Church St"
+          }
+        }
+      ]
+    }
+  }
+}

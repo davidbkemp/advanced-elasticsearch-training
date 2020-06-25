@@ -1,0 +1,67 @@
+# Use the mappings below to create a listings index with different analysers,
+# and insert a few documents as shown.
+
+DELETE /listings
+
+# Note the three "sub-fields" of address, with three different analysers
+PUT /listings
+{
+  "mappings": {
+    "properties": {
+      "address": {
+        "type": "text",
+        "analyzer": "standard",
+        "fields": {
+          "a": {"type": "text", "analyzer": "english"},
+          "b": {"type": "text", "analyzer": "whitespace"},
+          "c": {"type": "text", "analyzer": "simple"}
+        }
+      }
+    }
+  }
+}
+
+POST /listings/_doc
+{
+  "address": "1 Church St, Richmond"
+}
+
+POST /listings/_doc
+{
+  "address": "2 Church St, Richmond"
+}
+
+POST /listings/_doc
+{
+  "address": "1 Churches St, Blakeview"
+}
+
+
+# Try the following "analyze" command with the "standard", "english", "whitespace", and "simple" analysers to see
+# the effects of the different analysers:
+
+
+GET /listings/_analyze
+{
+  "analyzer": "whitespace",
+  "text": ["1 Churches St"]
+}
+
+
+# Look up "match_phrase" and use a "match_phrase" query that only matches "1 Church St"
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html
+GET /listings/_search
+{
+  "query": {
+    "match_phrase": {
+    ......
+
+
+# Use a "bool" query to find listings that match "1 Church St" after English stemming,
+# but gives a higher score (by using "should") to those listings that match without stemming
+
+GET /listings/_search
+{
+  "query": {
+    "bool": {
+....
