@@ -38,7 +38,7 @@ Requirements:
 There are scripts in the `scripts` directory that use docker-compose to create, stop and destroy an Elasticsearch + Kibana environment.
 
 If you have previously run a different version of Elasticsearch with these scripts,
-especially anything before version 6.6
+especially anything before version 7.8.0
 then it may be best to destroy your existing Elasticsearch data with `scripts/destroy`.
 
 Create an environment with:
