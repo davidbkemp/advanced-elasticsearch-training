@@ -4,7 +4,6 @@
 # - Supports queries like: "Does this shape over-lap this other shape"
 # - Has no aggregation support
 # - Stored as a "triangle mesh" in a "BKD tree"
-# - As of version 6.6.0, circles are no longer supported.  You need to approximate them as polygons.
 
 DELETE /listings
 
@@ -71,4 +70,4 @@ GET /listings/_search
 # INTERSECTS - (default) Return all documents whose geo_shape field intersects the query geometry.
 # DISJOINT - Return all documents whose geo_shape field has nothing in common with the query geometry.
 # WITHIN - Return all documents whose geo_shape field is within the query geometry.
-
+# CONTAINS - Return all documents whose geo_shape field contains the query geometry (since 7.5)

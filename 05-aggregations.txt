@@ -1,7 +1,7 @@
 # Delete the `listings` index
 DELETE /listings
 
-# Note the "keyword" type: it means no tokenizing etc., but is requihouse for aggregation.
+# Note the "keyword" type: it means no tokenizing etc., but is required for aggregation.
 PUT /listings
 {
   "settings": {
@@ -95,6 +95,8 @@ GET /listings/_search
 
 
 # What is doc_count_error_upper_bound and sum_other_doc_count???
+# sum_other_doc_count: number of documents not represented in the results (due to "size")
+# doc_count_error_upper_bound: maximum potential document count of a term not included in the results
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-approximate-counts
 GET /listings/_search
 {
@@ -104,6 +106,22 @@ GET /listings/_search
               "field" : "propertyType",
               "size": 1,
               "shard_size": 1
+            }
+        }
+    }
+}
+
+# Use "show_term_doc_count_error" to get worst case error per term
+#  - i.e. by how much each count may be an under-estimate of the real value
+GET /listings/_search
+{
+    "aggs" : {
+        "my_aggregation" : {
+            "terms" : {
+              "field" : "propertyType",
+              "size": 1,
+              "shard_size": 1,
+              "show_term_doc_count_error": true
             }
         }
     }

@@ -48,7 +48,6 @@ POST /listings/_doc/2
 }
 
 # Bounding box search
-# Only works for geo-points
 GET /listings/_search
 {
   "query": {
@@ -68,7 +67,6 @@ GET /listings/_search
 }
 
 # Radial/distance search
-# Only works for geo-points
 GET /listings/_search
 {
   "query": {

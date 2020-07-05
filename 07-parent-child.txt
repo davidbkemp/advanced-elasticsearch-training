@@ -42,7 +42,7 @@ PUT /listings
 # Note:
 # - you need to specify a "routing" query parameter (more later)
 # - you need to specify that it is a "my_listing"
-POST /listings/_doc/1?routing=abc
+POST /listings/_doc/1?routing=1
 {
   "title": "Sea Views",
   "address": "1 Smith St Melbourne Vic 3000",
@@ -54,7 +54,7 @@ POST /listings/_doc/1?routing=abc
 # Note:
 # - parents and children need the same routing parameter (consider using the parent id)
 # - you have to specify the parent id when indexing a child.
-POST /listings/_doc/100?routing=abc
+POST /listings/_doc/100?routing=1
 {
   "product": "premier",
   "start": "2015-03-07",
@@ -65,7 +65,7 @@ POST /listings/_doc/100?routing=abc
   }
 }
 
-POST /listings/_doc/101?routing=abc
+POST /listings/_doc/101?routing=1
 {
   "product": "highlight",
   "start": "2015-03-22",
@@ -77,7 +77,7 @@ POST /listings/_doc/101?routing=abc
 }
 
 
-POST /listings/_doc/2?routing=xyz
+POST /listings/_doc/2?routing=2
 {
   "title": "Renovators Delight",
   "address": "2 Jones St Sydney NSW 2000",
@@ -86,7 +86,7 @@ POST /listings/_doc/2?routing=xyz
   }
 }
 
-POST /listings/_doc/200?routing=xyz
+POST /listings/_doc/200?routing=2
 {
   "product": "premier",
   "start": "2015-03-28",
@@ -97,7 +97,7 @@ POST /listings/_doc/200?routing=xyz
   }
 }
 
-POST /listings/_doc/201?routing=xyz
+POST /listings/_doc/201?routing=2
 {
   "product": "highlight",
   "start": "2015-04-11",
@@ -111,7 +111,7 @@ POST /listings/_doc/201?routing=xyz
 # You may optionally specify a "routing" parameter at query time
 # BEWARE THAT IT WILL INCLUDE LISTINGS WITH DIFFERENT ROUTING PARAMETERS IF
 # THE HASHING ALGORITHM PUTS THEM IN THE SAME SHARD.
-GET /listings/_search?routing=xyz
+GET /listings/_search?routing=2
 
 
 # Use "has_child" query

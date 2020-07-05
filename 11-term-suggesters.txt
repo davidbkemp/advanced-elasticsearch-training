@@ -27,7 +27,7 @@ GET /addresses/_search
 
 
 # Find suggestions even for terms that match (e.g. "Smith" and "Smyth")
-# max_term_freq - used for ignoring common terms
+# max_term_freq - used for ignoring "common" terms. Defaults to 0.01
 GET /addresses/_search
 {
   "suggest": {
