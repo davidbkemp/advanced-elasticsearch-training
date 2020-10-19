@@ -7,21 +7,12 @@ services:
     environment:
      - cluster.name=docker-cluster
      - node.name=elasticsearch1
-     - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      - xpack.monitoring.collection.enabled=true
      - xpack.monitoring.exporters.remote.type=http
      - xpack.monitoring.exporters.remote.host=monitor
      - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    mem_limit: 1000000000
     ports:
       - "19200:9200"
 
@@ -31,21 +22,12 @@ services:
     environment:
      - cluster.name=docker-cluster
      - node.name=elasticsearch2
-     - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      - xpack.monitoring.collection.enabled=true
      - xpack.monitoring.exporters.remote.type=http
      - xpack.monitoring.exporters.remote.host=monitor
      - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    mem_limit: 1000000000
     ports:
       - "29200:9200"
 
@@ -55,21 +37,12 @@ services:
     environment:
      - cluster.name=docker-cluster
      - node.name=elasticsearch3
-     - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      - xpack.monitoring.collection.enabled=true
      - xpack.monitoring.exporters.remote.type=http
      - xpack.monitoring.exporters.remote.host=monitor
      - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    mem_limit: 1000000000
     ports:
       - "39200:9200"
 
@@ -79,19 +52,10 @@ services:
     environment:
      - cluster.name=docker-monitor-cluster
      - node.name=monitor
-     - bootstrap.memory_lock=true
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      - xpack.monitoring.collection.enabled=false
      - discovery.seed_hosts=monitor
      - cluster.initial_master_nodes=monitor
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    mem_limit: 1000000000
     ports:
       - "9200:9200"
 
