@@ -96,7 +96,7 @@ PUT /listings
 # Index example docs again.
 POST /listings/_doc/1
 {
-  "address": "1 Smith St Mebloure Vic 3000",
+  "address": "1 Smith St Melbourne Vic 3000",
   "upgrade": [
     {
       "product": "premier",

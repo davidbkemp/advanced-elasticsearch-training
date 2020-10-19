@@ -1,5 +1,5 @@
 {
-  "index_patterns": ["childcare-centres"],
+  "index_patterns": ["childcare-centres*"],
   "mappings": {
     "properties": {
       "geocode": {
