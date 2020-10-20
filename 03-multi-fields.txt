@@ -1,5 +1,15 @@
 DELETE /listings
 
+# Refresher on analysers
+
+# Try this with standard, english, whitespace, and simple
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": ["1/511 Church St, Richmond 3056"]
+}
+
+
 # Note the three "sub-fields" of address, with three different analysers
 PUT /listings
 {

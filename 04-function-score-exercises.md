@@ -24,11 +24,12 @@ With that in mind:
 
 Write a function_score query that gives a score of
 
-- 30.0 to 31.0 to premier
-- 20.0 to 21.0 to highlight
-- 10.0 to 11.0 to standard
+- 30 + x to premier
+- 20 + x to highlight
+- 10 + x to standard
 
-Where x is reflects how close the property price is to 800. For example,
+Where x is a value between 0 and 1 that reflects how close the property price is to 800.
+For example,
 
 - A premier property with a price of 800 should get a score of 31.0
 - A highlight property with a price of 460 should get a score something like 20.83
