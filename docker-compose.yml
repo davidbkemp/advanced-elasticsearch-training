@@ -8,6 +8,7 @@ services:
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      - "discovery.type=single-node"
      - xpack.monitoring.collection.enabled=true
+     - cluster.routing.allocation.disk.threshold_enabled=false
     ports:
       - "9200:9200"
     volumes:
