@@ -9,7 +9,7 @@ PUT /childcare-queries
 {
   "mappings": {
     "properties": {
-      "query": {
+      "saved_query": {
         "type": "percolator"
       },
       "name": {
@@ -33,7 +33,7 @@ Save some queries as follows:
 # Childcare centres whose name includes the word "goat"
 PUT /childcare-queries/_doc/1
 {
-  "query": {
+  "saved_query": {
     "match": {
       "name": "goat"
     }
@@ -43,7 +43,7 @@ PUT /childcare-queries/_doc/1
 # Childcare centres whose name includes the word "goodstart"
 PUT /childcare-queries/_doc/2
 {
-  "query": {
+  "saved_query": {
     "match": {
       "name": "goodstart"
     }
@@ -54,7 +54,7 @@ PUT /childcare-queries/_doc/2
 # OR is within 40km of the location 38 South, 145 East
 PUT /childcare-queries/_doc/3
 {
-  "query": {
+  "saved_query": {
     "bool": {
       "should": [
         {

@@ -4,5 +4,4 @@
 
 cd "$(dirname $0)"/..
 
-docker volume create --name elasticsearch-hands-on-2-data
 docker-compose up

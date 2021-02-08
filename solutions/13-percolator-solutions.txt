@@ -15,7 +15,7 @@ PUT /childcare-centres
       "query-name": {
         "type": "keyword"
       },
-      "query": {
+      "saved_query": {
         "type": "percolator"
       }
     }
@@ -28,7 +28,7 @@ PUT /childcare-centres
 PUT /childcare-centres/_doc/1
 {
   "query-name": "Goat query",
-  "query": {
+  "saved_query": {
     "match": {
       "name": "Goat"
     }
@@ -40,7 +40,7 @@ GET /childcare-centres/_search
 {
   "query": {
     "percolate": {
-      "field": "query",
+      "field": "saved_query",
       "document": {
         "name": "Billy Goat's Child Care",
         "contact_ph": "03 9999 2222",

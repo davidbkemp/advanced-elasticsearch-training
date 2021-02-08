@@ -2,7 +2,7 @@ version: "2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     container_name: elasticsearch-hands-on-2
     environment:
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -11,19 +11,13 @@ services:
      - cluster.routing.allocation.disk.threshold_enabled=false
     ports:
       - "9200:9200"
-    volumes:
-      - elasticsearch-hands-on-2-data:/usr/share/elasticsearch/data
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.8.0
+    image: docker.elastic.co/kibana/kibana:7.10.2
     environment:
       - "ELASTICSEARCH_HOSTS=http://elasticsearch-hands-on-2:9200"
     ports:
       - "5601:5601"
     depends_on:
       - elasticsearch
-
-volumes:
-  elasticsearch-hands-on-2-data:
-    external: true
 
