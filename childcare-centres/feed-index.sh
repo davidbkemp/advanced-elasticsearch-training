@@ -28,7 +28,7 @@ docker run \
     -e TEMPLATE_PATH="$MOUNT_DIR/mapping-template.json" \
     --rm -i \
     --network="container:elasticsearch-hands-on-2" \
-    docker.elastic.co/logstash/logstash:7.8.0 \
+    docker.elastic.co/logstash/logstash:7.10.2 \
         --pipeline.workers $PIPELINE_WORKERS \
         --path.config "$MOUNT_DIR/logstash" \
     < "$SRC_DIR/Childcare_Centres.csv"
