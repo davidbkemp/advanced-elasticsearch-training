@@ -9,3 +9,12 @@ PUT /_cluster/settings
       "cluster.routing.allocation.exclude._name" : "<node name>"
    }
 }
+
+
+## Documentation on reading/writing documents:
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-replication.html
+
+Of note for writing to Elasticsearch, the write request is forwarded to the primary shard,
+but the client doesn't receive a response until it has been replicated to all of
+the currently in-sync replicas.
