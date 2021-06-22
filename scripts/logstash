@@ -16,5 +16,5 @@ docker run -e XPACK_MONITORING_ENABLED=false \
   --rm  -i \
  -v "${LOGSTASH_CONFIG_DIR}":/usr/share/logstash/pipeline/ \
  --network="container:elasticsearch-hands-on-2" \
- docker.elastic.co/logstash/logstash:7.10.2 \
+ docker.elastic.co/logstash/logstash:7.13.2 \
     --pipeline.workers $PIPELINE_WORKERS

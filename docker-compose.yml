@@ -2,7 +2,7 @@ version: "2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
     container_name: elasticsearch-hands-on-2
     environment:
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -13,7 +13,7 @@ services:
       - "9200:9200"
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.2
+    image: docker.elastic.co/kibana/kibana:7.13.2
     environment:
       - "ELASTICSEARCH_HOSTS=http://elasticsearch-hands-on-2:9200"
     ports:

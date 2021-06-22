@@ -36,7 +36,7 @@ Look at:
 
 Open the dev tools tab of the main cluster
 
-http://localhost:15601/app/kibana#/dev_tools
+http://localhost:15601/app/dev_tools#/console
 
 Try the following:
 
