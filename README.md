@@ -7,7 +7,7 @@ It assumes an instructor will verbally explain a lot of the material.
 This material also assumes that you have already covered the basics including
 simple queries, index mappings, relevancy scoring, and custom analysers.
 
-See, for example, https://github.com/wsutina/intro-elasticsearch-training
+See, for example, https://jamesfer.me/intro-elasticsearch-training/#1
 
 ## Topics
 

@@ -6,7 +6,7 @@ DELETE /listings
 GET /_analyze
 {
   "analyzer": "standard",
-  "text": ["1/511 Church St, Richmond 3056"]
+  "text": ["1/511 Churches St, Richmond 3056"]
 }
 
 

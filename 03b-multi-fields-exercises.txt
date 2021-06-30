@@ -59,7 +59,10 @@ GET /listings/_search
 
 # Use a "bool" query to find listings that match "1 Church St" after English stemming,
 # but gives a higher score (by using "should") to those listings that match without stemming
-
+# Reminder for "bool":
+#  - Use "filter" for stuff that must be true
+#  - Use "should" to boost
+# See https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
 GET /listings/_search
 {
   "query": {
