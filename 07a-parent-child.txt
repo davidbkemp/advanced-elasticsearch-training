@@ -29,7 +29,7 @@ PUT /listings
       "my_join_field": {
         "type": "join",
         "relations": {
-          "my_listing": "my_upgrade"
+          "listing": "upgrade"
         }
       }
     }
@@ -41,13 +41,13 @@ PUT /listings
 # Index example docs
 # Note:
 # - you need to specify a "routing" query parameter (more later)
-# - you need to specify that it is a "my_listing"
+# - you need to specify that it is a "listing"
 POST /listings/_doc/1?routing=1
 {
   "title": "Sea Views",
   "address": "1 Smith St Melbourne Vic 3000",
   "my_join_field": {
-    "name": "my_listing"
+    "name": "listing"
   }
 }
 
@@ -60,7 +60,7 @@ POST /listings/_doc/100?routing=1
   "start": "2015-03-07",
   "end": "2015-03-21",
   "my_join_field": {
-    "name": "my_upgrade",
+    "name": "upgrade",
     "parent": "1"
   }
 }
@@ -71,7 +71,7 @@ POST /listings/_doc/101?routing=1
   "start": "2015-03-22",
   "end": "2015-04-13",
   "my_join_field": {
-    "name": "my_upgrade",
+    "name": "upgrade",
     "parent": "1"
   }
 }
@@ -82,7 +82,7 @@ POST /listings/_doc/2?routing=2
   "title": "Renovators Delight",
   "address": "2 Jones St Sydney NSW 2000",
   "my_join_field": {
-    "name": "my_listing"
+    "name": "listing"
   }
 }
 
@@ -92,7 +92,7 @@ POST /listings/_doc/200?routing=2
   "start": "2015-03-28",
   "end": "2015-04-10",
   "my_join_field": {
-    "name": "my_upgrade",
+    "name": "upgrade",
     "parent": "2"
   }
 }
@@ -103,7 +103,7 @@ POST /listings/_doc/201?routing=2
   "start": "2015-04-11",
   "end": "2015-05-19",
   "my_join_field": {
-    "name": "my_upgrade",
+    "name": "upgrade",
     "parent": "2"
   }
 }
@@ -120,7 +120,7 @@ GET /listings/_search
 {
   "query": {
     "has_child": {
-      "type": "my_upgrade",
+      "type": "upgrade",
       "query": {
         "bool": {
           "filter": [
@@ -155,7 +155,7 @@ GET /listings/_search
 {
   "query": {
     "has_child": {
-      "type": "my_upgrade",
+      "type": "upgrade",
       "inner_hits": {},
       "query": {
         "bool": {
@@ -191,7 +191,7 @@ GET /listings/_search
 {
   "query": {
     "has_parent": {
-      "parent_type": "my_listing",
+      "parent_type": "listing",
       "inner_hits": {},
       "query": {
         "match": {
