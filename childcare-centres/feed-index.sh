@@ -10,11 +10,7 @@ MOUNT_DIR="/usr/share/logstash/childcare-centres"
 ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://localhost:9200}
 
 echo "Delete the index if it already exists"
-if curl -s -I -XGET "$ELASTICSEARCH_URL/$INDEX" | grep --quiet '200 OK'
-then
-    echo "Deleting old index"
-    curl -XDELETE "$ELASTICSEARCH_URL/$INDEX?pretty=true"
-fi
+curl -XDELETE "$ELASTICSEARCH_URL/$INDEX?pretty=true" ||:
 
 # Need to set pipeline.workers to work around bugs in the CSV filter :-(
 # See https://discuss.elastic.co/t/event-dependent-configuration-broken-with-multiple-pipelines/141869
