@@ -32,7 +32,54 @@ POST /agencies/_doc/a?routing=1
       "parent": "1"
     }
 }
+
+POST /agencies/_doc/b?routing=1
+{
+    "firstName": "Joe",
+    "lastName": "Blogs",
+    "my_join_field": {
+      "name": "agent",
+      "parent": "1"
+    }
+}
 ```
+
+Also for MacGrath:
+
+```
+POST /agencies/_doc/2?routing=2
+{
+  "agencyName": "MacGrath",
+  "my_join_field": {
+    "name": "agency"
+  }
+}
+
+POST /agencies/_doc/x?routing=2
+{
+    "firstName": "Mary",
+    "lastName": "Blogs",
+    "my_join_field": {
+      "name": "agent",
+      "parent": "2"
+    }
+}
+
+POST /agencies/_doc/y?routing=2
+{
+    "firstName": "Joe",
+    "lastName": "Smith",
+    "my_join_field": {
+      "name": "agent",
+      "parent": "2"
+    }
+}
+
+....
+
+
+```
+
 
 
 Once again, find only those agencies that have an agent called "Mary Blogs".

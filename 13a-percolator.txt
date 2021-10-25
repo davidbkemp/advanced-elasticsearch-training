@@ -131,29 +131,7 @@ PUT /saved-searches/_doc/2
   }
 }
 
-# Now a new listing comes along
-
-PUT /listings/_doc/1003
-{
-    "suburb": "Brunswick VIC 3056",
-    "bedrooms": 4,
-    "description": "Large garden with in-ground swimming pool"
-}
-
-# Find queries that match
-GET /saved-searches/_search
-{
-  "query": {
-    "percolate": {
-      "field": "my-query-field",
-      "index": "listings",
-      "id": "1003"
-    }
-  }
-}
-
-
-# Percolate a document without actually inserting it
+# Now a new listing comes along and we find the saved searches that match that new listing
 GET /saved-searches/_search
 {
   "query": {

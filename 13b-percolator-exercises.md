@@ -97,7 +97,7 @@ Use a `percolate` query to find those saved queries that match this document:
 It should look a bit like this....
 
 ```
-GET /childcare-centres/_search
+GET /childcare-queries/_search
 {
   "query": {
     "percolate": {
