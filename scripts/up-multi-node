@@ -4,5 +4,7 @@
 
 cd "$(dirname $0)"/..
 
+trap "docker-compose down --volumes --remove-orphans" 0
+
 #docker-compose -f docker-compose.multi-node.yml up -d
 docker-compose -f docker-compose.multi-node.yml up
