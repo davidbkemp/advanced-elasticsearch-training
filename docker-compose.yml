@@ -2,20 +2,19 @@ version: "2"
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+    image: opensearchproject/opensearch:1.1.0
     container_name: elasticsearch-hands-on-2
     environment:
      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
      - "discovery.type=single-node"
-     - xpack.monitoring.collection.enabled=true
-     - cluster.routing.allocation.disk.threshold_enabled=false
+     - "cluster.routing.allocation.disk.threshold_enabled=false"
     ports:
       - "9200:9200"
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.13.2
+    image: opensearchproject/opensearch-dashboards:1.1.0
     environment:
-      - "ELASTICSEARCH_HOSTS=http://elasticsearch-hands-on-2:9200"
+      OPENSEARCH_HOSTS: '["https://elasticsearch-hands-on-2:9200"]' # must be a string with no spaces when specified as an environment variable
     ports:
       - "5601:5601"
     depends_on:
