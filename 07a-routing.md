@@ -62,7 +62,19 @@ But, you **may** specify the routing parameter when searching (not mandatory).
 
 ```
 GET /agency/_search?routing=brunswick
+{
+  "query": {
+    "term": {
+      "suburb": {
+        "value": "brunswick"
+      }
+    }
+  }
+}
 ```
+
+NOTE: `GET /agency/_search?routing=brunswick` **does not limit the query to "brunswick" documents**.
+It will return all documents in the same shard as the "brunswick" documents.
 
 ![Explicit search routing](./07-routing-diagrams/ExplicitRoutingSearch.svg)
 
