@@ -58,7 +58,7 @@ GET /agency/_doc/ABCXYZ?routing=brunswick
 
 By default, it will still forward the search to all shards.
 
-Byt, you **may** specify the routing parameter when searching (not mandatory).
+But, you **may** specify the routing parameter when searching (not mandatory).
 
 ```
 GET /agency/_search?routing=brunswick
