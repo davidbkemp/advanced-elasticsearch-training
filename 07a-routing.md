@@ -7,6 +7,9 @@ When a document is inserted, by default it is _routed_ to a shard based on a has
 
 ```
 PUT /agency/_doc/ABCXYZ
+{
+  "name": "Nelson Alexander"
+}
 ```
 
 ![Default Routing](./07-routing-diagrams/DefaultRouting.svg)
@@ -40,6 +43,9 @@ then you could use the suburb name as the routing parameter
 
 ```
 PUT /agency/_doc/ABCXYZ?routing=brunswick
+{
+  "name": "Nelson Alexander"
+}
 ```
 
 ![Explicit Routing](./07-routing-diagrams/ExplicitRouting.svg)
