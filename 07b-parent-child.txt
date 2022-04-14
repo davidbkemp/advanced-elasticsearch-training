@@ -11,12 +11,14 @@ PUT /listings
   },
   "mappings": {
     "properties": {
+
       "title": {
         "type": "text"
       },
       "address": {
         "type": "text"
       },
+
       "product": {
         "type": "keyword"
       },
@@ -26,6 +28,7 @@ PUT /listings
       "end": {
         "type": "date"
       },
+
       "my_join_field": {
         "type": "join",
         "relations": {
