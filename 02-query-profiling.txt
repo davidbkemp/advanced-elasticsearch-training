@@ -10,10 +10,23 @@ GET /test/_search
 {
   "profile": true,
   "query": {
-    "match": {
-      "title": {
-        "query": "Elasticsearch Tutorial"
-      }
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "title": {
+              "query": "Elasticsearch Tutorial"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "match": {
+            "title": "online"
+          }
+        }
+      ]
     }
   }
 }
