@@ -5,7 +5,7 @@ Try the following:
 ```
 DELETE /agencies
 
-POST /agencies/_doc/1
+PUT /agencies/_doc/1
 {
   "name": "Nelson Alexander",
   "agents": [
@@ -15,7 +15,7 @@ POST /agencies/_doc/1
 }
 
 
-POST /agencies/_doc/2
+PUT /agencies/_doc/2
 {
   "name": "MacGrath",
   "agents": [

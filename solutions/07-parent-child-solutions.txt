@@ -22,7 +22,7 @@ PUT /agencies
 
 
 
-POST /agencies/_doc/1?routing=1
+PUT /agencies/_doc/1?routing=1
 {
   "agencyName": "Nelson Alexander",
   "join": {
@@ -30,7 +30,7 @@ POST /agencies/_doc/1?routing=1
   }
 }
 
-POST /agencies/_doc/a?routing=1
+PUT /agencies/_doc/a?routing=1
 {
     "firstName": "Mary",
     "lastName": "Smith",
@@ -40,7 +40,7 @@ POST /agencies/_doc/a?routing=1
     }
 }
 
-POST /agencies/_doc/b?routing=1
+PUT /agencies/_doc/b?routing=1
 {
     "firstName": "Joe",
     "lastName": "Blogs",
@@ -50,7 +50,7 @@ POST /agencies/_doc/b?routing=1
     }
 }
 
-POST /agencies/_doc/2?routing=2
+PUT /agencies/_doc/2?routing=2
 {
   "agencyName": "MacGrath",
   "join": {
@@ -58,7 +58,7 @@ POST /agencies/_doc/2?routing=2
   }
 }
 
-POST /agencies/_doc/x?routing=2
+PUT /agencies/_doc/x?routing=2
 {
     "firstName": "Mary",
     "lastName": "Blogs",
@@ -69,7 +69,7 @@ POST /agencies/_doc/x?routing=2
 }
 
 
-POST /agencies/_doc/y?routing=2
+PUT /agencies/_doc/y?routing=2
 {
     "firstName": "Joe",
     "lastName": "Smith",

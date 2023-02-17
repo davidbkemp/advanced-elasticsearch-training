@@ -15,7 +15,7 @@ PUT /listing
 }
 
 # Note how the project name is duplicated in every listing in a project
-POST /listing/_doc/1
+PUT /listing/_doc/1
 {
   "projectId": "project-1",
   "projectName": "Kings Landing",
@@ -24,7 +24,7 @@ POST /listing/_doc/1
   "listingPrice": 100
 }
 
-POST /listing/_doc/2
+PUT /listing/_doc/2
 {
   "projectId": "project-1",
   "projectName": "Kings Landing",
@@ -33,7 +33,7 @@ POST /listing/_doc/2
   "listingPrice": 200
 }
 
-POST /listing/_doc/3
+PUT /listing/_doc/3
 {
   "projectId": "project-1",
   "projectName": "Kings Landing",
@@ -42,7 +42,7 @@ POST /listing/_doc/3
   "listingPrice": 1000000
 }
 
-POST /listing/_doc/4
+PUT /listing/_doc/4
 {
   "projectId": "project-2",
   "projectName": "Winterfell",
@@ -51,7 +51,7 @@ POST /listing/_doc/4
   "listingPrice": 50
 }
 
-POST /listing/_doc/5
+PUT /listing/_doc/5
 {
   "projectId": "project-2",
   "projectName": "Winterfell",
@@ -60,7 +60,7 @@ POST /listing/_doc/5
   "listingPrice": 150
 }
 
-POST /listing/_doc/6
+PUT /listing/_doc/6
 {
   "projectId": "project-2",
   "projectName": "Winterfell",

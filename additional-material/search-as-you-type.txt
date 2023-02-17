@@ -13,17 +13,17 @@ PUT /addresses
 }
 
 # Ingest some data
-POST addresses/_doc/1
+PUT addresses/_doc/1
 {
   "my-suggest": "50 Smith St, Brunswick, VIC 3056"
 }
 
-POST addresses/_doc/2
+PUT addresses/_doc/2
 {
   "my-suggest": "53 Green St, Brunswick, VIC 3056"
 }
 
-POST addresses/_doc/3
+PUT addresses/_doc/3
 {
   "my-suggest": "51 Green St, Brunswick, VIC 3056"
 }

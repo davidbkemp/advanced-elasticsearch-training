@@ -27,7 +27,7 @@ PUT /listings
 # Index example docs
 # Using the geo-shape array format
 # NOTE HOW THE LONGITUDE COMES BEFORE THE LATITUDE
-POST /listings/_doc/1
+PUT /listings/_doc/1
 {
   "address": {
     "fullAddress": "511 Church St, Richmond, VIC 3121",
@@ -38,7 +38,7 @@ POST /listings/_doc/1
   }
 }
 
-POST /listings/_doc/2
+PUT /listings/_doc/2
 {
   "address": {
     "fullAddress": "Kirribilli House, Kiribilli Ave, Kirribilli NSW 2061",

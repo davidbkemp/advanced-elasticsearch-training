@@ -1,7 +1,7 @@
 DELETE /listings
 
 # Index example docs
-POST /listings/_doc/1
+PUT /listings/_doc/1
 {
   "address": "1 Smith St Melbourne Vic 3000",
   "upgrade": [
@@ -18,7 +18,7 @@ POST /listings/_doc/1
   ]
 }
 
-POST /listings/_doc/2
+PUT /listings/_doc/2
 {
   "address": "2 Jones St Sydney NSW 2000",
   "upgrade": [
@@ -94,7 +94,7 @@ PUT /listings
 
 
 # Index example docs again.
-POST /listings/_doc/1
+PUT /listings/_doc/1
 {
   "address": "1 Smith St Melbourne Vic 3000",
   "upgrade": [
@@ -111,7 +111,7 @@ POST /listings/_doc/1
   ]
 }
 
-POST /listings/_doc/2
+PUT /listings/_doc/2
 {
   "address": "2 Jones St Sydney NSW 2000",
   "upgrade": [
