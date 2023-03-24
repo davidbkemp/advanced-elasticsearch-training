@@ -1,28 +1,27 @@
 # Representing relationships
 
-Consider listing upgrades.
+How could you represent that a real estate agency can have many real estate agents?
 
-Which listings had a premiere upgrade on April 1st?
+Let's assume that an agent only works for one agency.
 
-![listing upgrades](./06-relationship-diagrams/ListingUpgrades.svg)
+![Agency to agent relationship](./06-relationship-diagrams/AgencyAgents.svg)
 
 ## Nested array of objects
 
-Note: you will need to explicitly declare `upgrade` as being of type `nested`, and will have to use `nested` queries.
+Note: you will need to explicitly declare `agents` as being of type `nested`, and will have to use `nested` queries.
 
 ```json 
 {
-  "address": "1 Smith St Melbourne Vic 3000",
-  "upgrade": [
+  "name": "Nelson Alexander"
+  "address": "528 Sydney Rd Brunswick Vic",
+  "agents": [
     {
-      "product": "premier",
-      "start": "2015-03-07",
-      "end": "2015-03-21"
+      "name": "Mary Smith",
+      "phone": "0411 11112222"
     },
     {
-      "product": "highlight",
-      "start": "2015-03-22",
-      "end": "2015-04-13"
+      "name": "Joe Blogs",
+      "phone": "0411 33334444"
     }
   ]
 }
@@ -30,21 +29,21 @@ Note: you will need to explicitly declare `upgrade` as being of type `nested`, a
 
 ## Parent / Child
 
-Upgrades represented as separate documents but mixed together in the same index as the listings.
+Agents represented as separate documents but mixed together in the same index as the agencies.
 Special "join"  field is used to connect them.
 
-![Parent Child](./06-relationship-diagrams/ParentChild.svg)
+![Parent Child](06-relationship-diagrams/AgencyAgentParentChild.svg)
 
 ## Field Collapsing
 
 De-normalise the relationship.
-e.g. duplicate the listing information in every document.
+e.g. duplicate the agency information in every agent document.
 
-```json
-{"listingId": 1, "address": "5 Smith St", "product": "premier", "start": "2015-03-07", "end": "2015-03-21"}
-{"listingId": 1, "address": "5 Smith St", "product": "highlight", "start": "2015-03-22", "end": "2015-04-13"}
-{"listingId": 2, "address": "7 Jones St", "product": "premier", "start": "2015-03-28", "end": "2015-04-10"}
-{"listingId": 2, "address": "7 Jones St", "product": "highlight", "start": "2015-04-11", "end": "2015-05-19"}
+```json lines
+{"agentId": 1, "agencyId": 123, "agencyName": "Nelson ..", "agencyAddress": "52 Syd..", "agentName":  "M Smith", "agentPhone":  "0411 11112222"}
+{"agentId": 2, "agencyId": 123, "agencyName": "Nelson ..", "agencyAddress": "52 Syd..", "agentName":  "J BLogs", "agentPhone":  "0411 33334444"}
+{"agentId": 3, "agencyId": 456, "agencyName": "MacGrath", "agencyAddress": "16 Car..", "agentName":  "J Ng", "agentPhone":  "0411 12121212"}
+{"agentId": 4, "agencyId": 456, "agencyName": "MacGrath", "agencyAddress": "16 Car..", "agentName":  "J Ryan", "agentPhone":  "0411 34343434"}
 ```
 
-Query can "collapse" results on a field (e.g. the `listingId`).
+Query can "collapse" results on a field (e.g. the `agencyId`).
