@@ -9,6 +9,7 @@ services:
      - "discovery.type=single-node"
      - xpack.monitoring.collection.enabled=true
      - cluster.routing.allocation.disk.threshold_enabled=false
+     - xpack.security.enabled=false
     ports:
       - "9200:9200"
 
@@ -16,6 +17,7 @@ services:
     image: docker.elastic.co/kibana/kibana:7.17.5
     environment:
       - "ELASTICSEARCH_HOSTS=http://elasticsearch-hands-on-2:9200"
+      - xpack.security.enabled=false
     ports:
       - "5601:5601"
     depends_on:
