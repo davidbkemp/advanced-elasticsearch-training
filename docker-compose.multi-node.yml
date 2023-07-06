@@ -13,6 +13,7 @@ services:
      - xpack.monitoring.exporters.remote.host=monitor
      - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
+     - xpack.security.enabled=false
     ports:
       - "19200:9200"
 
@@ -28,6 +29,7 @@ services:
      - xpack.monitoring.exporters.remote.host=monitor
      - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
+     - xpack.security.enabled=false
     ports:
       - "29200:9200"
 
@@ -43,6 +45,7 @@ services:
      - xpack.monitoring.exporters.remote.host=monitor
      - discovery.seed_hosts=elasticsearch1,elasticsearch2,elasticsearch3
      - cluster.initial_master_nodes=elasticsearch1,elasticsearch2,elasticsearch3
+     - xpack.security.enabled=false
     ports:
       - "39200:9200"
 
@@ -56,6 +59,7 @@ services:
      - xpack.monitoring.collection.enabled=false
      - discovery.seed_hosts=monitor
      - cluster.initial_master_nodes=monitor
+     - xpack.security.enabled=false
     ports:
       - "9200:9200"
 
